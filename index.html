@@ -168,7 +168,11 @@
   .menu button { height: 40px; padding: 0 14px; border-radius: 8px; text-align: left; font-size: 16px; color: var(--text); white-space: nowrap; }
   .menu button:hover, .menu button.on { background: var(--card); }
 
-  .actions { margin-top: auto; padding-top: 40px; }
+  .actions { margin-top: auto; padding-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+  .next { height: 56px; padding: 0 42px; border-radius: 12px; background: #5500eb; color: var(--text); font-weight: 700; font-size: 18px; transition: background .2s, opacity .2s; }
+  .next:hover { background: var(--violet-hover); }
+  .next[disabled] { opacity: .4; cursor: default; }
+  .next.is-hidden { display: none; }
   .back { height: 56px; padding: 0 36px; border-radius: 12px; background: var(--btn); font-weight: 700; font-size: 18px; color: var(--text); transition: background .2s; }
   .back:hover { background: var(--card-hover); }
   .back.is-hidden { visibility: hidden; }
@@ -315,7 +319,7 @@
       <div class="bar" id="bar"></div>
     </div>
     <div class="step" id="step"></div>
-    <div class="actions"><button class="back" id="back">Назад</button></div>
+    <div class="actions"><button class="back" id="back">Назад</button><button class="next" id="next">Продолжить</button></div>
   </div>
   <div class="stage" aria-hidden="true"><div class="box" id="box"></div></div>
 </section>
@@ -399,6 +403,7 @@ const STEPS = [
   },
   {
     label: 'Продукт или услуга',
+    cont: true,
     q: 'О каком продукте или услуге нужно рассказать?',
     fields: [
       { kind: 'textarea', key: 'product', placeholder: 'Например: реклама и SEO для частных клиник под ключ' },
@@ -411,6 +416,7 @@ const STEPS = [
   },
   {
     label: 'О компании',
+    cont: true,
     q: 'Сайт и название компании',
     fields: [
       { kind: 'input', key: 'site', label: 'Адрес сайта', placeholder: 'Например, tochka-rosta.ru' },
@@ -445,6 +451,7 @@ const STEPS = [
   },
   {
     label: 'Преимущества для клиента',
+    cont: true,
     q: 'Что получит клиент?',
     fields: [
       { kind: 'chips', key: 'results', mode: 'multi', wide: true,
@@ -503,8 +510,7 @@ const SCENES = [
   [{ ...box(881, 194, 626, 470), cls: 'fit', src: 's2-product.png' }],
   [{ ...box(778, 148, 707, 566), cls: 'fit', src: 's3-company.png' }],
   [{ ...box(987, 238, 445, 425), cls: 'fit', src: 's4-client.png' }],
-  [{ ...box(924, 171, 534, 543), cls: 'crop', src: 'icons-sprite.png', img: 'height:188.58%;left:-157.12%;top:0;width:287.64%',
-     rings: [[150, 114.98], [218, 115], [288, 115], [358, 114]].map(([x, y]) => `left:${x / 5.34}%;top:${y / 5.43}%;width:${23 / 5.34}%;height:${13.02 / 5.43}%`) }],
+  [{ ...box(901, 156, 521, 521), cls: 'fit', src: 's5-calendar.png' }],
   [{ ...box(857, 225, 652, 435), cls: 'fit', src: 's6-result.png' }],
   [{ ...box(940, 224, 513, 510), cls: 'crop', src: 'icons-sprite.png', img: 'height:200.78%;left:-32.94%;top:-100.78%;width:299.42%' }],
   [{ ...box(886, 183, 559, 559), cls: 'fit', src: 's8-price.png' }],
@@ -595,6 +601,12 @@ function renderStep(animate) {
   $('stepLabel').textContent = st.label;
   [...$('bar').children].forEach((b, k) => b.classList.toggle('done', k <= S.step));
   $('back').classList.toggle('is-hidden', S.step === 0);
+  updateNext();
+}
+function updateNext() {
+  const st = STEPS[S.step];
+  $('next').classList.toggle('is-hidden', !st.cont);
+  $('next').disabled = !st.valid(S.a);
 }
 function rerender(focusSel) {
   const y = scrollY;
@@ -614,6 +626,7 @@ function cancelAdvance() {
 }
 function scheduleAdvance(ms) {
   cancelAdvance();
+  if (STEPS[S.step].cont) return updateNext();
   if (!STEPS[S.step].valid(S.a)) return;
   ms = ms ?? STEPS[S.step].wait ?? 1000;
   const seg = $('bar').children[S.step + 1];
@@ -677,6 +690,7 @@ stepEl.addEventListener('input', e => {
   if (t.dataset.input) S.a[t.dataset.input] = t.value;
   else if (t.dataset.cond != null) S.a.conditions[+t.dataset.cond].text = t.value;
   cancelAdvance();
+  updateNext();
 });
 stepEl.addEventListener('focusin', cancelAdvance);
 stepEl.addEventListener('focusout', e => {
@@ -695,6 +709,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && S.open.menu) { S.open.menu = null; return rerender(); }
   if (e.key === 'Enter' && !e.shiftKey && STEPS[S.step].valid(S.a)) { e.preventDefault(); next(); }
 });
+$('next').addEventListener('click', next);
 $('back').addEventListener('click', () => { cancelAdvance(); if (S.step > 0) go(S.step - 1); });
 
 /* ---------- Переходы ---------- */
@@ -1051,8 +1066,7 @@ const objects = (() => {
     const el = document.createElement('div');
     el.className = 'obj ' + L.cls;
     if (L.style) el.style.cssText = L.style;
-    el.innerHTML = `<img src="assets/${L.src}" alt="" draggable="false"${L.img ? ` style="${L.img}"` : ''}>` +
-      (L.rings || []).map(r => `<img src="assets/s5-ring.svg" alt="" style="${r}">`).join('');
+    el.innerHTML = `<img src="assets/${L.src}" alt="" draggable="false"${L.img ? ` style="${L.img}"` : ''}>`;
     slot.appendChild(el);
     const it = { slot, el, rz: L.rz || 0, x: 0, y: 0, vx: 0, vy: 0, rx: 0, ry: 0, phase: Math.random() * 6.28 };
     el.addEventListener('pointerdown', e => {
