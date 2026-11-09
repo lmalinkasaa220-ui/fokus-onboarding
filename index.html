@@ -296,6 +296,7 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   }
+  body.embed #landing { display: none; }
 </style>
 </head>
 <body>
@@ -428,9 +429,14 @@ const STEPS = [
     label: 'Клиент',
     q: 'Кому адресовано КП?',
     fields: [
-      { kind: 'chips', key: 'audience', mode: 'multi', max: 2,
+      /* B2B / B2C — простыми словами. Переключатель не запускает автопереход и не снимается повторным кликом */
+      { kind: 'chips', key: 'segment', label: 'Кому продаёте', mode: 'single', keep: true, noAdvance: true,
+        options: ['Компаниям', 'Людям'] },
+      { kind: 'chips', key: 'audience', label: 'Кто принимает решение', mode: 'multi', max: 2, show: a => a.segment !== 'Людям',
         options: ['Собственник или директор', 'Финансовый директор', 'Руководитель продаж или маркетинга', 'Закупки', 'Технический специалист', 'Не знаю'] },
-      { kind: 'select', key: 'industry', label: 'Отрасль или сегмент клиента', cols: 2, placeholder: 'Выберите отрасль',
+      { kind: 'chips', key: 'audience', label: 'Кто ваши клиенты', mode: 'multi', max: 2, show: a => a.segment === 'Людям',
+        options: ['Частные клиенты', 'Семьи с детьми', 'Молодёжь', 'Люди 45+', 'Премиум-сегмент', 'Не знаю'] },
+      { kind: 'select', key: 'industry', show: a => a.segment !== 'Людям', label: 'Отрасль или сегмент клиента', cols: 2, placeholder: 'Выберите отрасль',
         options: ['Медицина и стоматология', 'Ритейл и e-commerce', 'Гостиничный бизнес', 'IT и телеком', 'Производство', 'Строительство и недвижимость', 'Образование', 'Финансы и страхование', 'Логистика', 'Госсектор', 'Красота и фитнес', MANUAL],
         manual: 'Ваша отрасль или сегмент' },
     ],
@@ -494,6 +500,9 @@ const STEPS = [
       { kind: 'chips', key: 'slides', label: 'Количество слайдов', mode: 'single', options: ['5 (рекомендовано)', '8', '12'] },
       { kind: 'chips', key: 'lang', label: 'Язык презентации', mode: 'single', options: ['Русский', 'English'],
         more: { label: 'Другой ▾', options: ['Армянский', 'Казахский', 'Узбекский', 'Немецкий', 'Французский', 'Испанский', 'Итальянский', 'Китайский', 'Турецкий', 'Арабский'] } },
+      /* «Сохранять ли текст» из задания: Фокус пишет тексты сам или оставляет размеченные блоки пустыми */
+      { kind: 'chips', key: 'texts', label: 'Тексты на слайдах', mode: 'single', keep: true, noAdvance: true,
+        options: ['Написать тексты за меня', 'Только структура, текст впишу сам'] },
     ],
     valid: a => !!a.cta && (a.cta !== OTHER || !!(a.ctaOther || '').trim()),
   },
@@ -522,7 +531,11 @@ const SCENES = [
   ],
 ];
 
-const S = { step: -1, a: { slides: '5 (рекомендовано)', lang: 'Русский', conditions: [{ type: 'Бонус', text: '' }] }, open: {} };
+/* Встраивание в лендинг fokus.am/p/commercial-proposal/: index.html?embed=1&slides=8
+   открывает сразу первый вопрос, логотип закрывает окно поверх лендинга */
+const Q = new URLSearchParams(location.search);
+const EMBED = Q.has('embed');
+const S = { step: -1, a: { segment: 'Компаниям', texts: 'Написать тексты за меня', slides: '5 (рекомендовано)', lang: 'Русский', conditions: [{ type: 'Бонус', text: '' }] }, open: {} };
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const CHEVRON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>';
@@ -596,7 +609,7 @@ function fieldHtml(f) {
 
 function renderStep(animate) {
   const st = STEPS[S.step], el = $('step');
-  el.innerHTML = `<h2 class="q">${esc(st.q)}</h2>` + st.fields.map(f => `<div class="group">${fieldHtml(f)}</div>`).join('');
+  el.innerHTML = `<h2 class="q">${esc(st.q)}</h2>` + st.fields.filter(f => !f.show || f.show(S.a)).map(f => `<div class="group">${fieldHtml(f)}</div>`).join('');
   el.classList.remove('leaving');
   if (animate) { el.classList.remove('entering'); void el.offsetWidth; el.classList.add('entering'); }
   $('stepLabel').textContent = st.label;
@@ -656,15 +669,20 @@ stepEl.addEventListener('click', e => {
   const chip = e.target.closest('[data-chip]');
   if (chip) {
     const key = chip.dataset.chip, val = chip.dataset.val;
-    const f = st.fields.find(x => x.key === key);
+    const f = st.fields.find(x => x.key === key && (!x.show || x.show(a)));
     if (f.mode === 'multi') {
       const arr = a[key] || (a[key] = []);
       const i = arr.indexOf(val);
       if (i >= 0) arr.splice(i, 1); else { if (f.max && arr.length >= f.max) arr.shift(); arr.push(val); }
-    } else a[key] = a[key] === val ? '' : val;
+    } else {
+      const prev = a[key];
+      a[key] = prev === val && !f.keep ? '' : val;
+      if (key === 'segment' && prev !== val) { a.audience = []; a.industry = ''; }   // другой набор вариантов
+    }
     const typing = val === OTHER && isOn(f, OTHER);
     rerender(typing ? `[data-input="${key}Other"]` : null);
     sand.nudge();
+    if (f.noAdvance) return cancelAdvance();
     if (!typing) scheduleAdvance(f.mode === 'multi' ? 1500 : undefined);
     return;
   }
@@ -767,7 +785,8 @@ function toLanding() {
   S.step = -1;
 }
 $('start').addEventListener('click', startFlow);
-$('logo').addEventListener('click', toLanding);
+$('logo').addEventListener('click', () => EMBED ? parent.postMessage({ type: 'fokus:close' }, '*') : toLanding());
+if (Q.get('slides')) S.a.slides = Q.get('slides') === '5' ? '5 (рекомендовано)' : Q.get('slides');
 
 /* =========================================================
    Фоны по экранам: песок, лучи (как на atlantic.vc/contact), звёзды
@@ -939,6 +958,7 @@ function generate() {
     // Экрана с готовой презентацией в макете нет — отдаём все данные наружу.
     const detail = JSON.parse(JSON.stringify({ answers: S.a, outline: S.outline }));
     document.dispatchEvent(new CustomEvent('fokus:complete', { detail }));
+    if (EMBED) parent.postMessage({ type: 'fokus:complete' }, '*');
     console.log('fokus:complete', detail);
   });
 }
@@ -1313,6 +1333,26 @@ const sand = (() => {
     nudge() { st.pulse = Math.max(st.pulse, .3); },
   };
 })();
+
+/* Типографика: предлоги и союзы в 1–2 буквы не остаются в конце строки, тире не начинает строку.
+   Экраны рисуются на лету, поэтому обрабатываем и всё, что добавляется позже. */
+function typo(root) {
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n =>
+    n.parentElement && !n.parentElement.closest('script, style, textarea') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  for (let n; (n = w.nextNode());) {
+    let s = n.nodeValue, prev;
+    do { prev = s; s = s.replace(/(^|[\s («„"])([а-яёa-z]{1,2}) +/gi, '$1$2 '); } while (s !== prev);
+    s = s.replace(/ ([—–])/g, ' $1');
+    if (s !== n.nodeValue) n.nodeValue = s;
+  }
+}
+typo(document.body);
+new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => {
+  if (n.nodeType === 1) typo(n); else if (n.nodeType === 3 && n.parentElement) typo(n.parentElement);
+}))).observe(document.body, { childList: true, subtree: true });
+
+/* открыт с лендинга — сразу первый вопрос, без главного экрана */
+if (EMBED) { document.body.classList.add('embed'); startFlow(); }
 </script>
 </body>
 </html>

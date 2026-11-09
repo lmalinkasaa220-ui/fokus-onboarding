@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Коммерческое предложение для любого бизнеса: структура, шаблон и пример КП | Фокус</title>
+<meta name="description" content="Пример коммерческого предложения по слайдам и конструктор КП: 9 вопросов — и «Фокус» соберёт презентацию на 5, 8 или 12 слайдов с текстами и дизайном.">
+<link rel="canonical" href="https://fokus.am/p/commercial-proposal/">
+<!-- Тестовая копия на github.io: не индексировать, чтобы не дублировать fokus.am. В проде убрать. -->
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fokus.am/p/commercial-proposal/">
+<meta property="og:title" content="Структура и шаблон коммерческого предложения | Фокус">
+<meta property="og:description" content="Пример КП по слайдам и конструктор: 9 вопросов — и готовая презентация на 5, 8 или 12 слайдов.">
+<style>
+  @font-face { font-family: "ALS Hauss"; src: url("fonts/als-hauss-regular.otf") format("opentype"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "ALS Hauss"; src: url("fonts/als-hauss-medium.otf") format("opentype"); font-weight: 500; font-display: swap; }
+  @font-face { font-family: "ALS Hauss"; src: url("fonts/als-hauss-bold.otf") format("opentype"); font-weight: 700; font-display: swap; }
+
+  /* Страница масштабируется от ширины 1440, как fokus.am: 1 единица = 1px макета */
+  :root { --u: calc(100vw / 1440); --pink: #ff55dd; --bg: #1c1a2e; --muted: rgba(255,255,255,.62);
+          --ink: #17142a; --violet: #5500eb; --lilac: #efe9ff; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: #fff; }
+  body { font-family: "ALS Hauss", Arial, sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  b, strong { font-weight: 700; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+
+  /* ---------- слайды существующего лендинга ---------- */
+  .slide {
+    position: relative; width: 100%; height: calc(810 * var(--u));
+    background: var(--bg) url("assets/landing/art.jpg") no-repeat;
+    background-size: 100% auto;
+    background-position: 0 calc(var(--k) * -810 * var(--u));
+  }
+  .t {
+    position: absolute; margin: 0; font-weight: 400;
+    left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: calc(var(--w, 1100) * var(--u));
+    font-size: calc(var(--fs) * var(--u)); line-height: calc(var(--lh) * var(--u));
+  }
+  h2.t { font-weight: 700; }
+  /* розовые кнопки нарисованы в фоне слайда — поверх кладём настоящую ссылку */
+  .cta-over {
+    position: absolute; left: calc(432 * var(--u)); top: calc(var(--y) * var(--u));
+    width: calc(570 * var(--u)); height: calc(100 * var(--u)); border-radius: calc(22 * var(--u));
+    display: flex; align-items: center; justify-content: center;
+    font-size: calc(28.82 * var(--u)); background: none; border: 0;
+  }
+  .cta-over:hover { background: rgba(255,255,255,.08); }
+  .tpl-label { position: absolute; font-weight: 700; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); font-size: calc(var(--fs) * var(--u)); line-height: 1.2; white-space: nowrap; }
+
+  /* ---------- первый экран ---------- */
+  .topbar { position: absolute; left: calc(28 * var(--u)); right: calc(28 * var(--u)); top: calc(28 * var(--u)); display: flex; justify-content: space-between; align-items: center; z-index: 3; }
+  .topbar img { height: calc(30 * var(--u)); display: block; mix-blend-mode: screen; }   /* у логотипа чёрная подложка */
+  .topbar a { font-size: calc(20 * var(--u)); text-decoration: none; opacity: .85; }
+  .topbar a:hover { opacity: 1; }
+  .hero-left { position: absolute; left: calc(28 * var(--u)); top: calc(190 * var(--u)); width: calc(760 * var(--u)); z-index: 2; }
+  .hero h1 { margin: 0; font-weight: 700; font-size: calc(72 * var(--u)); line-height: calc(80 * var(--u)); letter-spacing: -.01em; }
+  .lead { margin: calc(28 * var(--u)) 0 0; font-size: calc(26 * var(--u)); line-height: calc(32 * var(--u)); width: calc(560 * var(--u)); color: rgba(255,255,255,.85); }
+  .btn {
+    display: inline-flex; align-items: center; gap: calc(12 * var(--u)); margin-top: calc(40 * var(--u));
+    height: calc(88 * var(--u)); padding: 0 calc(40 * var(--u)); border-radius: calc(22 * var(--u)); border: 0;
+    background: var(--pink); color: #fff; font-size: calc(28 * var(--u)); text-decoration: none;
+    transition: transform .2s, filter .2s;
+  }
+  .btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .seo > .btn { display: flex; width: fit-content; margin-left: auto; margin-right: auto; }   /* кнопка под разделом — по центру страницы */
+  .btn svg { width: calc(22 * var(--u)); height: calc(22 * var(--u)); }
+  .trust { margin: calc(26 * var(--u)) 0 0; font-size: calc(20 * var(--u)); color: var(--muted); }
+
+  /* веер из трёх слайдов примера */
+  .fan { position: absolute; left: calc(770 * var(--u)); top: calc(110 * var(--u)); width: calc(640 * var(--u)); height: calc(640 * var(--u)); }
+  .fan .ps { position: absolute; box-shadow: 0 calc(30 * var(--u)) calc(60 * var(--u)) rgba(0,0,0,.45); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+  .fan .ps:nth-child(1) { width: calc(430 * var(--u)); left: calc(190 * var(--u)); top: 0; transform: rotate(7deg); }
+  .fan .ps:nth-child(2) { width: calc(450 * var(--u)); left: calc(0 * var(--u)); top: calc(185 * var(--u)); transform: rotate(-5deg); }
+  .fan .ps:nth-child(3) { width: calc(470 * var(--u)); left: calc(150 * var(--u)); top: calc(375 * var(--u)); transform: rotate(2deg); }
+  .fan:hover .ps:nth-child(1) { transform: rotate(9deg) translate(calc(12 * var(--u)), calc(-8 * var(--u))); }
+  .fan:hover .ps:nth-child(2) { transform: rotate(-7deg) translateX(calc(-12 * var(--u))); }
+  .fan:hover .ps:nth-child(3) { transform: rotate(1deg) translateY(calc(10 * var(--u))); }
+
+  /* ---------- слайд-пример (масштабируется от своей ширины) ---------- */
+  .ps { position: relative; container-type: inline-size; aspect-ratio: 16 / 9; border-radius: calc(14 * var(--u)); overflow: hidden; background: #fff; color: var(--ink); }
+  .ps .in { position: absolute; inset: 0; padding: 6cqw 6.5cqw; display: flex; flex-direction: column; }
+  .ps.dark { background: var(--violet); color: #fff; }
+  .ps .k { font-size: 2.3cqw; font-weight: 500; color: var(--violet); letter-spacing: .02em; }
+  .ps.dark .k { color: rgba(255,255,255,.75); }
+  .ps .h { font-size: 5.6cqw; line-height: 1.08; font-weight: 700; margin-top: 2cqw; }
+  .ps .big { position: relative; font-size: 7cqw; line-height: 1.05; font-weight: 700; margin-top: auto; width: 80%; }
+  .ps .foot { margin-top: auto; display: flex; justify-content: space-between; font-size: 2.1cqw; opacity: .7; }
+  .ps .grow { flex: 1; }
+  .ps .row { display: flex; gap: 3cqw; margin-top: auto; }
+  .ps .row > div { flex: 1; }
+  .ps .num { font-size: 6.2cqw; white-space: nowrap; font-weight: 700; color: var(--violet); line-height: 1; }
+  .ps .lab { font-size: 2.3cqw; line-height: 1.3; margin-top: 1.2cqw; color: #5b5670; }
+  .ps .list { margin-top: auto; display: flex; flex-direction: column; gap: 2.2cqw; }
+  .ps .list div { display: flex; gap: 2.4cqw; font-size: 3.1cqw; line-height: 1.2; align-items: baseline; }
+  .ps .list i { font-style: normal; font-weight: 700; color: var(--violet); font-size: 2.4cqw; width: 4cqw; }
+  .ps .bars { margin-top: auto; display: flex; align-items: flex-end; gap: 2.6cqw; height: 12cqw; }
+  .ps .bars div { flex: 1; background: var(--lilac); border-radius: 1cqw 1cqw 0 0; position: relative; }
+  .ps .bars div:last-child { background: var(--violet); }
+  .ps .bars span { position: absolute; top: -3.6cqw; left: 0; right: 0; text-align: center; font-size: 2.2cqw; font-weight: 700; }
+  .ps .bars em { position: absolute; bottom: -3.4cqw; left: 0; right: 0; text-align: center; font-size: 1.9cqw; font-style: normal; color: #8a85a0; }
+  .ps .line { margin-top: auto; display: flex; position: relative; }
+  .ps .line::before { content: ""; position: absolute; left: 0; right: 0; top: 1.3cqw; height: .35cqw; background: var(--lilac); }
+  .ps .line div { flex: 1; position: relative; padding-top: 5cqw; font-size: 2.4cqw; line-height: 1.25; }
+  .ps .line div::before { content: ""; position: absolute; top: 0; left: 0; width: 2.9cqw; height: 2.9cqw; border-radius: 50%; background: var(--violet); }
+  .ps .line b { display: block; font-size: 3cqw; }
+  .ps .people { margin-top: auto; display: flex; gap: 4cqw; }
+  .ps .people div { flex: 1; font-size: 2.4cqw; line-height: 1.3; color: #5b5670; }
+  .ps .people b { display: block; color: var(--ink); font-size: 2.8cqw; margin-top: 2cqw; }
+  .ps .ava { width: 12cqw; height: 12cqw; border-radius: 50%; background: var(--lilac); color: var(--violet); display: grid; place-items: center; font-weight: 700; font-size: 4cqw; }
+  .ps .qa { margin-top: auto; display: flex; flex-direction: column; gap: 2.4cqw; }
+  .ps .qa div { display: flex; gap: 3cqw; font-size: 3cqw; line-height: 1.2; }
+  .ps .qa b { width: 22cqw; flex: none; color: var(--violet); }
+  .ps .prices { margin-top: auto; display: flex; gap: 2.4cqw; }
+  .ps .prices div { flex: 1; border-radius: 2cqw; padding: 3cqw; background: var(--lilac); font-size: 2.2cqw; line-height: 1.3; color: #5b5670; }
+  .ps .prices div.on { background: var(--violet); color: rgba(255,255,255,.8); }
+  .ps .prices b { display: block; white-space: nowrap; font-size: 3.1cqw; color: var(--ink); margin: 1cqw 0; }
+  .ps .prices div.on b { color: #fff; }
+  .ps .pill { align-self: flex-start; margin-top: 4cqw; background: #fff; color: var(--violet); border-radius: 10cqw; padding: 1.8cqw 4cqw; font-size: 2.8cqw; font-weight: 700; }
+  .ps .quote { margin-top: 3cqw; font-size: 2.6cqw; color: #5b5670; }
+  .ps .pic { position: absolute; display: block; pointer-events: none; filter: drop-shadow(0 1.5cqw 2cqw rgba(30,10,80,.18)); }
+  .ps .orb { position: absolute; right: -16cqw; top: -22cqw; width: 50cqw; height: 50cqw; border-radius: 50%; background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.22), rgba(255,255,255,0) 70%); }
+
+  /* ---------- новые разделы ---------- */
+  .seo { background: linear-gradient(180deg, #1c1a2e 0%, #221d47 100%); padding: calc(110 * var(--u)) calc(28 * var(--u)) calc(120 * var(--u)); }
+  .seo h2 { margin: 0; font-size: calc(53 * var(--u)); line-height: calc(64 * var(--u)); font-weight: 700; }
+  /* куча готовых слайдов: внахлёст, под разными углами; при наведении слайд выпрямляется и поднимается */
+  .pile { position: relative; height: calc(930 * var(--u)); margin-top: calc(40 * var(--u)); }
+  .pile .ps { position: absolute; width: calc(500 * var(--u)); left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); z-index: var(--z);
+              transform: rotate(var(--r)); box-shadow: 0 calc(24 * var(--u)) calc(50 * var(--u)) rgba(0,0,0,.45);
+              transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s; }
+  .pile .ps:hover { transform: rotate(0deg) scale(1.06); z-index: 20; box-shadow: 0 calc(36 * var(--u)) calc(70 * var(--u)) rgba(0,0,0,.55); }
+  .steps { list-style: none; padding: 0; margin: calc(56 * var(--u)) 0 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: calc(36 * var(--u)); counter-reset: s; }
+  .steps li { counter-increment: s; border-top: 1px solid rgba(255,255,255,.18); padding-top: calc(22 * var(--u)); }
+  .steps li::before { content: "0" counter(s); display: block; color: var(--pink); font-weight: 700; font-size: calc(20 * var(--u)); margin-bottom: calc(14 * var(--u)); }
+  .steps h3 { margin: 0 0 calc(10 * var(--u)); font-size: calc(24 * var(--u)); line-height: calc(28 * var(--u)); }
+  .steps p { margin: 0; font-size: calc(18 * var(--u)); line-height: calc(25 * var(--u)); color: var(--muted); }
+  .faq { margin-top: calc(40 * var(--u)); width: calc(1100 * var(--u)); }
+  .faq details { border-top: 1px solid rgba(255,255,255,.18); }
+  .faq details:last-child { border-bottom: 1px solid rgba(255,255,255,.18); }
+  .faq summary { list-style: none; cursor: pointer; padding: calc(26 * var(--u)) 0; font-size: calc(26 * var(--u)); font-weight: 700; display: flex; justify-content: space-between; gap: calc(20 * var(--u)); }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-weight: 400; transition: transform .2s; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq details p { margin: 0; padding: 0 0 calc(26 * var(--u)); font-size: calc(21 * var(--u)); line-height: calc(29 * var(--u)); color: var(--muted); width: calc(900 * var(--u)); }
+
+  /* ---------- окно с вопросами поверх страницы ---------- */
+  .kp { position: fixed; inset: 0; z-index: 50; background: #000; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+  .kp.on { opacity: 1; visibility: visible; }
+  .kp iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .kp-close { position: absolute; top: 24px; right: 24px; width: 48px; height: 48px; border-radius: 14px; border: 0; background: rgba(255,255,255,.1); display: grid; place-items: center; }
+  .kp-close:hover { background: rgba(255,255,255,.18); }
+  body.kp-open { overflow: hidden; }
+</style>
+</head>
+<body>
+
+<!-- ===== Новый первый экран ===== -->
+<header class="slide hero" style="--k:0">
+  <div class="topbar">
+    <a href="#" aria-label="Фокус"><img src="assets/fokus-logo.png" alt="Фокус"></a>
+    <a href="#" data-start>Войти</a>
+  </div>
+  <div class="hero-left">
+    <h1>Коммерческое предложение для&nbsp;любого бизнеса</h1>
+    <p class="lead">Шаблон КП с высокой конверсией: структура, тексты и&nbsp;дизайн слайдов — за&nbsp;9&nbsp;вопросов.</p>
+    <button class="btn" data-start>Заполнить под мой бизнес
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h11M10 5l4 4-4 4"/></svg>
+    </button>
+    <p class="trust">Нам доверяют 40&nbsp;000+ пользователей</p>
+  </div>
+  <div class="fan" id="fan" aria-label="Пример слайдов коммерческого предложения"></div>
+</header>
+
+<!-- ===== Существующий слайд «Оформление без усилий» ===== -->
+<section class="slide" style="--k:1">
+  <button class="cta-over" style="--y:174" data-start>Начать создание КП</button>
+  <h2 class="t" style="--x:28;--y:384;--fs:53.1;--lh:63.72;--w:900">Оформление коммерческого<br>предложения без усилий</h2>
+  <p class="t" style="--x:28;--y:567;--fs:27.21;--lh:32.65;--w:1120">Процесс создания коммерческого предложения теперь полностью автоматизирован.<br>Создавать коммерческое предложение вручную — значит подбирать шрифты,<br>выравнивать блоки, править отступы и переписывать текст по 10 раз. «Фокус»<br>делает это автоматически. Всё, что нужно — описать продукт, а дальше алгоритмы<br>сами соберут предложение – от дизайна до текста.</p>
+</section>
+
+<!-- ===== НОВОЕ: пример презентации КП (под запросы «структура КП пример», «слайды для КП») ===== -->
+<section class="seo" id="example">
+  <h2>Пример коммерческого предложения</h2>
+  <div class="pile" id="pile" aria-label="Слайды примера коммерческого предложения"></div>
+  <button class="btn" data-start>Собрать КП под свой бизнес
+    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h11M10 5l4 4-4 4"/></svg>
+  </button>
+</section>
+
+<!-- ===== Существующие слайды ===== -->
+<section class="slide" style="--k:2">
+  <p class="t" style="--x:28;--y:341;--fs:26.56;--lh:31.87;--w:800"><b>Дизайн без дизайнера</b><br>«Фокус» сам подбирает шрифты и цвета, расставляет акценты<br>и визуальные блоки. Итог — презентабельный документ,<br>который можно сразу отправлять клиенту.</p>
+</section>
+
+<section class="slide" style="--k:3">
+  <button class="cta-over" style="--y:84" data-start>Начать создание КП</button>
+  <p class="t" style="--x:28;--y:341;--fs:26.56;--lh:31.87;--w:800"><b>AI-генерация контента для коммерческого предложения</b><br>Достаточно описать продукт или услугу в диалоговом окне<br>и «Фокус» предложит заголовки, структуру и тексты —<br>их можно отредактировать прямо в интерфейсе.</p>
+</section>
+
+<section class="slide" style="--k:4">
+  <p class="t" style="--x:28;--y:71;--fs:26.56;--lh:31.87;--w:700"><b>Интуитивно понятный интерфейс</b><br>Все просто: открыть — заполнить — отправить.<br>Не нужен опыт в дизайне, маркетинге или верстке.<br>Справится даже тот, кто раньше делал КП в «Word».</p>
+  <button class="cta-over" style="--y:624" data-start>Начать создание КП</button>
+</section>
+
+<!-- ===== НОВОЕ: как составить КП (под запрос «как составить кп») ===== -->
+<section class="seo" id="how">
+  <h2>Как составить коммерческое предложение за&nbsp;5&nbsp;шагов</h2>
+  <ol class="steps">
+    <li><h3>Целевая аудитория</h3><p>Тип клиента (B2B или B2C) и лицо, принимающее решение, определяют аргументацию и тон предложения.</p></li>
+    <li><h3>Потребность клиента</h3><p>Предложение строится вокруг задачи клиента: рост продаж, снижение затрат, экономия времени.</p></li>
+    <li><h3>Ценность и доказательства</h3><p>Измеримый результат для клиента, подтверждённый кейсами, цифрами и отзывами.</p></li>
+    <li><h3>Возражения и стоимость</h3><p>Ответы на типовые возражения по цене, срокам и рискам. Стоимость — с обоснованием и условиями.</p></li>
+    <li><h3>Призыв к действию</h3><p>Один конкретный следующий шаг — заявка, встреча или пробный период — и контактные данные.</p></li>
+  </ol>
+</section>
+
+<section class="slide" style="--k:5">
+  <p class="t" style="--x:28;--y:71;--fs:26.56;--lh:31.87;--w:800"><b>Стикеры, иконки, интерактивные элементы</b><br>Возможность добавить визуальные элементы, чтобы показать<br>преимущества наглядно: диаграммы, стикеры, кнопки<br>и прочее — все под рукой.</p>
+  <p class="t" style="--x:28;--y:619;--fs:30.98;--lh:37.18;--w:1100"><b>Красиво на любых устройствах</b><br>КП, созданное в «Фокусе», хорошо смотрится и на ноутбуке,<br>и на телефоне. Ничего не съезжает, не теряется и не требует доработки.</p>
+</section>
+
+<section class="slide" style="--k:6">
+  <button class="cta-over" style="--y:354" data-start>Начать создание КП</button>
+  <p class="t" style="--x:28;--y:589;--fs:28.32;--lh:33.99;--w:920"><b>Удобный экспорт</b><br>Готовое предложение можно скачать в PDF или PPTX<br>либо поделиться ссылкой на онлайн-версию. Удобно для отправки<br>по почте или в мессенджере.</p>
+</section>
+
+<section class="slide" style="--k:7">
+  <p class="t" style="--x:28;--y:607;--fs:28.02;--lh:33.63;--w:960"><a href="#" data-start><b>Готовые шаблоны коммерческих предложений для быстрого старта</b></a><br>Начать работу с заполнения готового шаблона легко. Это позволит<br>структурировать информацию и получить готовый результат<br>за считанные минуты.</p>
+</section>
+
+<section class="slide" style="--k:8">
+  <a class="tpl-label" href="#" style="--x:172;--y:345;--fs:26.42">Коммерческое предложение</a>
+  <a class="tpl-label" href="#" style="--x:902;--y:342;--fs:28.87">Стратегия роста бизнеса</a>
+  <a class="tpl-label" href="#" style="--x:207;--y:747;--fs:28.78">Бизнес-предложение</a>
+  <a class="tpl-label" href="#" style="--x:975;--y:749;--fs:27.37">Оказание услуг</a>
+</section>
+
+<section class="slide" style="--k:9">
+  <p class="t" style="--x:28;--y:83;--fs:28.53;--lh:34.24;--w:700"><b>Фирменные шрифты Студии Артемия Лебедева</b><br>50 дизайнерских шрифтов — чтобы документ<br>был не только грамотным, но и стильным.</p>
+  <h2 class="t" style="--x:28;--y:363;--fs:61.95;--lh:74.34;--w:800">Из коммерческого<br>предложения в лендинг</h2>
+  <p class="t" style="--x:28;--y:567;--fs:25.98;--lh:31.18;--w:1100">Клиенту удобнее смотреть в браузере, чем скачивать PDF?<br>Сделать из коммерческого предложения лендинг с формой захвата,<br>кнопками и ссылками — просто. Такой документ можно использовать<br>как страницу для вебинара, рекламной рассылки или презентации услуги.</p>
+</section>
+
+<!-- ===== НОВОЕ: частые вопросы (разметка FAQPage ниже) ===== -->
+<section class="seo" id="faq">
+  <h2>Частые вопросы о коммерческом предложении</h2>
+  <div class="faq" id="faqList"></div>
+</section>
+
+<footer class="slide" style="--k:10">
+  <button class="cta-over" style="--y:56" data-start>Начать создание КП</button>
+  <p class="t" style="--x:28;--y:660;--fs:23.29;--lh:27.95;--w:600">Конструктор идеальных презентаций — <a href="https://fokus.am">fokus.am</a></p>
+  <p class="t" style="--x:886;--y:661;--fs:22.32;--lh:26.78;--w:500">Создано в <a href="https://www.artlebedev.ru">Студии Артемия Лебедева</a></p>
+</footer>
+
+<!-- ===== Окно с вопросами (наш прототип) поверх страницы ===== -->
+<div class="kp" id="kp" role="dialog" aria-modal="true" aria-label="Конструктор коммерческого предложения">
+  <iframe id="kpFrame" title="Конструктор КП"></iframe>
+  <button class="kp-close" id="kpClose" aria-label="Закрыть"><svg width="18" height="18" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="1.4"><path d="M2 2l8 8M10 2l-8 8"/></svg></button>
+</div>
+
+<script>
+/* Пример КП: агентство «Точка роста» для клиники «Улыбка».
+   Порядок слайдов — тот же, что на экране «Структура презентации» и в макете шаблона. */
+const pic = (name, style) => `<img class="pic" src="assets/landing/${name}.png" alt="" loading="lazy" style="${style}">`;
+const FOOT = '<div class="foot"><span>Точка роста</span><span>tochka-rosta.ru</span></div>';
+const SLIDES = [
+  ['Обложка', 'dark', `<div class="orb"></div><div class="k">Коммерческое предложение · клиника «Улыбка»</div>
+    ${pic('s2-product', 'width:40cqw;right:2cqw;bottom:12cqw')}
+    <div class="big" style="width:58%;font-size:6.2cqw">Реклама и&nbsp;SEO для частных клиник под ключ</div>${FOOT}`],
+  ['Задача клиента', '', `${pic('s4-client', 'width:30cqw;right:5cqw;bottom:7cqw')}<div class="k">Задача клиента</div><div class="h">Больше пациентов —<br>без роста бюджета</div>
+    <div class="list"><div><i>01</i>Мало заявок с сайта и карт</div><div><i>02</i>Заявка подорожала на 40% за год</div><div><i>03</i>Нет понятной аналитики по каналам</div></div>`],
+  ['Цена бездействия', '', `<div class="k">Цена бездействия</div><div class="h">Без изменений клиника<br>каждый месяц теряет</div>
+    <div class="row"><div><div class="num">−50</div><div class="lab">пациентов в месяц</div></div><div><div class="num">−600 тыс. ₽</div><div class="lab">выручки в месяц</div></div></div>`],
+  ['Результат', '', `${pic('s6-result', 'width:30cqw;right:3cqw;top:3cqw')}<div class="k">Результат</div><div class="h">Что изменится<br>за 3 месяца</div>
+    <div class="row"><div><div class="num">+35%</div><div class="lab">заявок с сайта<br>и карт</div></div><div><div class="num">1 200 ₽</div><div class="lab">стоимость заявки<br>вместо 1 850 ₽</div></div><div><div class="num">×2</div><div class="lab">окупаемость<br>рекламы</div></div></div>`],
+  ['Почему выбирают нас', '', `<div class="k">Почему «Точка роста»</div><div class="h">Три причины</div>
+    <div class="row"><div><div class="num">8 лет</div><div class="lab">в медицинском<br>маркетинге</div></div><div><div class="num">100%</div><div class="lab">заявок в отчёте —<br>своя аналитика</div></div><div><div class="num">0 ₽</div><div class="lab">за тестовый месяц —<br>оплата за результат</div></div></div>`],
+  ['Кейс', '', `<div class="k">Кейс · клиника «Улыбка»</div><div class="h">Стоимость заявки −35%<br>за 4 месяца</div>
+    <div class="bars"><div style="height:100%"><span>1 850 ₽</span><em>март</em></div><div style="height:86%"><span>1 600 ₽</span><em>апрель</em></div><div style="height:74%"><span>1 380 ₽</span><em>май</em></div><div style="height:65%"><span>1 200 ₽</span><em>июнь</em></div></div><div style="height:3.4cqw"></div>`],
+  ['Опыт в цифрах', '', `<div class="k">Опыт в цифрах</div>
+    <div class="row" style="margin-top:4cqw"><div><div class="num">120</div><div class="lab">клиник<br>в работе</div></div><div><div class="num">85%</div><div class="lab">продлевают<br>договор</div></div><div><div class="num">4,9</div><div class="lab">средняя оценка<br>клиентов</div></div></div>
+    <div class="quote" style="margin-top:auto">«Заявок стало вдвое больше, а отчёт понятен даже главврачу» — клиника «Улыбка»</div>`],
+  ['Команда и подход', '', `<div class="k">Команда</div><div class="h">Кто ведёт проект</div>
+    <div class="people"><div><div class="ava">АК</div><b>Анна К.</b>аккаунт-менеджер,<br>отчёт каждую неделю</div><div><div class="ava">ИЛ</div><b>Игорь Л.</b>реклама<br>в Яндексе и картах</div><div><div class="ava">МС</div><b>Мария С.</b>SEO и контент<br>для сайта</div></div>`],
+  ['Этапы и сроки', '', `${pic('s5-calendar', 'width:24cqw;right:4cqw;top:2cqw')}<div class="k">Этапы и сроки</div><div class="h">Первые заявки —<br>через месяц</div>
+    <div class="line"><div><b>Аудит</b>5 дней</div><div><b>Запуск</b>2 недели</div><div><b>Заявки</b>1 месяц</div><div><b>Отчёт</b>каждую неделю</div></div>`],
+  ['Снимаем сомнения', '', `<div class="k">Частые сомнения</div><div class="h">Ответы до вопроса</div>
+    <div class="qa"><div><b>Дорого?</b>Первый месяц — тестовый, оплата только за заявки</div><div><b>Долго?</b>Первые заявки — через месяц после старта</div><div><b>Незнакомы?</b>120 клиник и открытые кейсы с цифрами</div></div>`],
+  ['Стоимость', '', `${pic('s8-price', 'width:22cqw;right:4cqw;top:1cqw')}<div class="k">Стоимость</div><div class="h">Тарифы<br>на продвижение</div>
+    <div class="prices"><div>Старт<b>45 000 ₽</b>реклама<br>в Яндексе</div><div class="on">Рост<b>80 000 ₽</b>реклама + карты<br>+ аналитика</div><div>Максимум<b>от 120 000 ₽</b>всё + SEO<br>и сайт</div></div>`],
+  ['Следующий шаг', 'dark', `<div class="orb"></div><div class="k">Следующий шаг</div>
+    ${pic('s3-company', 'width:36cqw;right:2cqw;bottom:8cqw')}
+    <div class="big" style="margin-top:4cqw;width:60%;font-size:5.8cqw">Бесплатный аудит рекламы за 2 дня</div><div class="pill">Оставить заявку</div>
+    <div class="foot"><span>+7 495 000-00-00</span><span>tochka-rosta.ru</span></div>`],
+];
+const SETS = { 5: [0, 1, 3, 10, 11], 8: [0, 1, 2, 3, 5, 9, 10, 11], 12: [0,1,2,3,4,5,6,7,8,9,10,11] };
+const slideHtml = i => `<div class="ps ${SLIDES[i][1]}"><div class="in">${SLIDES[i][2]}</div></div>`;
+
+/* первый экран: обложка, результат, стоимость */
+document.getElementById('fan').innerHTML = [0, 3, 10].map(slideHtml).join('');
+
+/* куча: [слайд, x, y, угол, слой] в координатах макета 1440 */
+const PILE = [
+  [0, 0, 40, -6, 3], [1, 440, 0, 4, 2], [3, 884, 50, -3, 4],
+  [5, 90, 330, 5, 5], [10, 470, 290, -2, 7], [8, 870, 360, 6, 6],
+  [6, 10, 610, -4, 8], [9, 450, 600, 3, 9], [11, 880, 640, -5, 10],
+];
+document.getElementById('pile').innerHTML = PILE.map(([i, x, y, r, z]) =>
+  slideHtml(i).replace('class="ps', `title="${SLIDES[i][0]}" style="--x:${x};--y:${y};--r:${r}deg;--z:${z}" class="ps`)).join('');
+let n = 5;   // сколько слайдов передать в вопросы по умолчанию
+
+const FAQ = [
+  ['Что должно быть в коммерческом предложении?', 'Обложка с сутью предложения, задача клиента, результат, доказательства (кейс, цифры, отзывы), цена с условиями и понятный следующий шаг с контактами.'],
+  ['Сколько слайдов должно быть в КП?', 'Для первого письма хватит 5 слайдов: обложка, задача, результат, цена, следующий шаг. Для ответа на запрос или тендер — 8. Подробное КП с кейсами, командой и этапами — 12.'],
+  ['Чем КП для компаний отличается от КП для частных клиентов?', 'Компаниям важны цифры, сроки и снижение рисков — решение часто принимают несколько человек. Частному клиенту важнее понятная выгода, простая цена и доверие: отзывы, гарантии.'],
+  ['Нужна ли регистрация?', 'Вопросы и структура КП доступны без регистрации. Вход нужен только для генерации и сохранения презентации в «Фокусе».'],
+  ['Можно получить пустой шаблон КП?', 'Да. В последнем вопросе есть вариант «Только структура, текст впишу сам» — «Фокус» оформит слайды с размеченными блоками, а тексты вписываются в редакторе.'],
+  ['Как отправить КП клиенту?', 'PDF, PPTX или ссылка на онлайн-версию — её удобно открыть с телефона. Из КП можно сделать лендинг с формой заявки.'],
+];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+document.getElementById('faqList').innerHTML = FAQ.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('');
+const ld = document.createElement('script');
+ld.type = 'application/ld+json';
+ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) });
+document.head.appendChild(ld);
+
+/* Типографика: предлоги и союзы в 1–2 буквы не остаются в конце строки,
+   тире не начинает строку — склеиваем неразрывным пробелом */
+function typo(root) {
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n =>
+    n.parentElement.closest('script, style, textarea') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  for (let n; (n = w.nextNode());) {
+    let s = n.nodeValue, prev;
+    do { prev = s; s = s.replace(/(^|[\s («„"])([а-яёa-z]{1,2}) +/gi, '$1$2 '); } while (s !== prev);
+    s = s.replace(/ ([—–])/g, ' $1');
+    if (s !== n.nodeValue) n.nodeValue = s;
+  }
+}
+typo(document.body);
+
+/* Все кнопки «Начать / Заполнить» открывают вопросы поверх страницы, адрес не меняется */
+const kp = document.getElementById('kp'), frame = document.getElementById('kpFrame');
+function openKp() {
+  const src = `index.html?embed=1&slides=${n}`;
+  if (frame.dataset.src !== src) { frame.src = src; frame.dataset.src = src; }
+  kp.classList.add('on'); document.body.classList.add('kp-open');
+  setTimeout(() => frame.focus(), 400);
+}
+function closeKp() { kp.classList.remove('on'); document.body.classList.remove('kp-open'); }
+document.addEventListener('click', e => {
+  const s = e.target.closest('[data-start]');
+  if (s) { e.preventDefault(); openKp(); }
+});
+document.getElementById('kpClose').addEventListener('click', closeKp);
+addEventListener('keydown', e => { if (e.key === 'Escape' && kp.classList.contains('on')) closeKp(); });
+addEventListener('message', e => { if (e.data && e.data.type === 'fokus:close') closeKp(); });
+</script>
+</body>
+</html>
