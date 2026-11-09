@@ -55,8 +55,8 @@
   .topbar img { height: calc(30 * var(--u)); display: block; mix-blend-mode: screen; }   /* у логотипа чёрная подложка */
   .topbar a { font-size: calc(20 * var(--u)); text-decoration: none; opacity: .85; }
   .topbar a:hover { opacity: 1; }
-  .hero-left { position: absolute; left: calc(28 * var(--u)); top: calc(190 * var(--u)); width: calc(760 * var(--u)); z-index: 2; }
-  .hero h1 { margin: 0; font-weight: 700; font-size: calc(72 * var(--u)); line-height: calc(80 * var(--u)); letter-spacing: -.01em; }
+  .hero-left { position: absolute; left: calc(28 * var(--u)); top: calc(190 * var(--u)); width: calc(720 * var(--u)); z-index: 2; }
+  .hero h1 { margin: 0; font-weight: 700; font-size: calc(68 * var(--u)); line-height: calc(76 * var(--u)); letter-spacing: -.01em; }
   .lead { margin: calc(28 * var(--u)) 0 0; font-size: calc(26 * var(--u)); line-height: calc(32 * var(--u)); width: calc(560 * var(--u)); color: rgba(255,255,255,.85); }
   .btn {
     display: inline-flex; align-items: center; gap: calc(12 * var(--u)); margin-top: calc(40 * var(--u));
@@ -70,11 +70,11 @@
   .trust { margin: calc(26 * var(--u)) 0 0; font-size: calc(20 * var(--u)); color: var(--muted); }
 
   /* веер из трёх слайдов примера */
-  .fan { position: absolute; left: calc(770 * var(--u)); top: calc(110 * var(--u)); width: calc(640 * var(--u)); height: calc(640 * var(--u)); }
+  .fan { position: absolute; left: calc(870 * var(--u)); top: calc(130 * var(--u)); width: calc(540 * var(--u)); height: calc(620 * var(--u)); }
   .fan .ps { position: absolute; box-shadow: 0 calc(30 * var(--u)) calc(60 * var(--u)) rgba(0,0,0,.45); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
-  .fan .ps:nth-child(1) { width: calc(430 * var(--u)); left: calc(190 * var(--u)); top: 0; transform: rotate(7deg); }
-  .fan .ps:nth-child(2) { width: calc(450 * var(--u)); left: calc(0 * var(--u)); top: calc(185 * var(--u)); transform: rotate(-5deg); }
-  .fan .ps:nth-child(3) { width: calc(470 * var(--u)); left: calc(150 * var(--u)); top: calc(375 * var(--u)); transform: rotate(2deg); }
+  .fan .ps:nth-child(1) { width: calc(390 * var(--u)); left: calc(140 * var(--u)); top: 0; transform: rotate(7deg); }
+  .fan .ps:nth-child(2) { width: calc(410 * var(--u)); left: calc(0 * var(--u)); top: calc(175 * var(--u)); transform: rotate(-5deg); }
+  .fan .ps:nth-child(3) { width: calc(430 * var(--u)); left: calc(100 * var(--u)); top: calc(350 * var(--u)); transform: rotate(2deg); }
   .fan:hover .ps:nth-child(1) { transform: rotate(9deg) translate(calc(12 * var(--u)), calc(-8 * var(--u))); }
   .fan:hover .ps:nth-child(2) { transform: rotate(-7deg) translateX(calc(-12 * var(--u))); }
   .fan:hover .ps:nth-child(3) { transform: rotate(1deg) translateY(calc(10 * var(--u))); }
