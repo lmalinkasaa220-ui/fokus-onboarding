@@ -303,6 +303,7 @@
   .deck.is-on { display: grid; grid-template-columns: 260px minmax(0, 1fr); grid-template-rows: 84px minmax(0, 1fr); height: 100vh; background: #07090f; animation: screenIn .6s var(--ease) both; }
   .deck-head { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 28px; border-bottom: 1px solid rgba(255,255,255,.08); }
   .deck-head h2 { margin: 0; font-size: 20px; font-weight: 500; }
+  body.embed .deck-head { padding-right: 100px; }   /* в окне поверх лендинга справа лежит крестик закрытия */
   .deck-head > :first-child { justify-self: start; }
   .deck-head .right { justify-self: end; display: flex; gap: 12px; }
   .deck-head .ghost { height: 44px; padding: 0 20px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4); font-size: 16px; font-weight: 500; }
@@ -1127,9 +1128,15 @@ function fitAll(root) {
   root.querySelectorAll('.dcard').forEach(c => { const t = c.querySelector('.tt'); if (!t) return; let fs = parseFloat(getComputedStyle(t).fontSize); while (c.scrollHeight > c.clientHeight + 1 && fs > 22) { fs -= 2; t.style.fontSize = fs + 'px'; t.style.lineHeight = Math.round(fs * 1.15) + 'px'; } });
 }
 function renderDeck() {
-  const D = deckData(), keys = S.outlineKeys || [];
+  let D; try { D = deckData(); } catch (e) { console.error(e); D = { gen: true, co: 'Название компании', site: 'сайт компании' }; }
+  const keys = S.outlineKeys || [];
   const items = (S.outline || []).map((t, i) => ({ t: (t || '').trim(), k: keys[i] || 'custom' })).filter(x => x.t);
-  DECK.slides = items.map((it, i) => SLIDE[it.k] ? SLIDE[it.k](i + 1, D, it.t) : SLIDE.custom(i + 1, D, it.t));
+  /* если какой-то слайд не собрался — показываем простой слайд с названием, презентация открывается всегда */
+  DECK.slides = items.map((it, i) => {
+    try { return SLIDE[it.k] ? SLIDE[it.k](i + 1, D, it.t) : SLIDE.custom(i + 1, D, it.t); }
+    catch (e) { console.error(e); try { return SLIDE.custom(i + 1, D, it.t); } catch (e2) { return { html: `<div class="dhead"><h1>${esc(it.t)}</h1></div>` }; } }
+  });
+  if (!DECK.slides.length) DECK.slides = [{ html: '<div class="dhead"><h1>Презентация</h1><p>Слайдов пока нет</p></div>' }];
   DECK.items = items; DECK.i = 0;
   $('thumbs').innerHTML = DECK.slides.map((s, i) => `<button class="thumb" data-sl="${i}" aria-label="Слайд ${i + 1}">${swrap(s)}<em>${i + 1}</em></button>`).join('');
   showSlide(0); fitDeck();
@@ -1183,7 +1190,7 @@ function generate() {
     document.dispatchEvent(new CustomEvent('fokus:complete', { detail }));
     if (EMBED) parent.postMessage({ type: 'fokus:complete' }, '*');
     console.log('fokus:complete', detail);
-    setTimeout(() => openScreen('deck'), 1400);   // результат: готовая презентация
+    setTimeout(() => { try { openScreen('deck'); } catch (e) { console.error(e); } }, 1400);   // результат: готовая презентация
   });
 }
 
