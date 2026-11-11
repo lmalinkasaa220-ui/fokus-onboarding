@@ -30,10 +30,14 @@
   /* ---------- слайды существующего лендинга ---------- */
   .slide {
     position: relative; width: 100%; height: calc(810 * var(--u));
-    background: var(--bg) url("assets/landing/art.jpg") no-repeat;
+    background: var(--bg) var(--img) no-repeat;
     background-size: 100% auto;
-    background-position: 0 calc(var(--k) * -810 * var(--u));
+    background-position: 0 0;
   }
+  .slide.short { height: calc(600 * var(--u)); }
+  /* блок разрезан: между галереей и кнопкой вставлено 50px чистого фона */
+  .slide.split { height: calc(860 * var(--u)); background-image: none; }
+  .lay { position: absolute; left: 0; width: 100%; top: calc(var(--ty) * var(--u)); height: calc(var(--h) * var(--u)); background: var(--img) no-repeat; background-size: 100% auto; background-position: 0 calc(var(--by) * var(--u) * -1); }
   .t {
     position: absolute; margin: 0; font-weight: 400;
     left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: calc(var(--w, 1100) * var(--u));
@@ -48,6 +52,13 @@
     font-size: calc(28.82 * var(--u)); background: none; border: 0;
   }
   .cta-over:hover { background: rgba(255,255,255,.08); }
+  /* заплатка: берёт чистый фон ниже кнопки (на 112px ниже) и накладывает на розовую кнопку */
+  .patch { position: absolute; left: calc(366 * var(--u)); top: calc(144 * var(--u)); width: calc(700 * var(--u)); height: calc(190 * var(--u));
+           background: var(--img) no-repeat; background-size: calc(1440 * var(--u)) auto; background-position: calc(-366 * var(--u)) calc(-334 * var(--u));
+           /* края растушёваны, чтобы заплатка не была видна */
+           -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent), linear-gradient(to bottom, transparent, #000 12.6%, #000 87.4%, transparent);
+           mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent), linear-gradient(to bottom, transparent, #000 12.6%, #000 87.4%, transparent);
+           -webkit-mask-composite: source-in; mask-composite: intersect; }
   .tpl-label { position: absolute; font-weight: 700; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); font-size: calc(var(--fs) * var(--u)); line-height: 1.2; white-space: nowrap; }
 
   /* ---------- первый экран ---------- */
@@ -144,7 +155,7 @@
   .faq summary::-webkit-details-marker { display: none; }
   .faq summary::after { content: "+"; font-weight: 400; transition: transform .2s; }
   .faq details[open] summary::after { transform: rotate(45deg); }
-  .faq details p { margin: 0; padding: 0 0 calc(26 * var(--u)); font-size: calc(21 * var(--u)); line-height: calc(29 * var(--u)); color: var(--muted); width: calc(900 * var(--u)); }
+  .faq details p { margin: 0; padding: 0 0 calc(26 * var(--u)); font-size: calc(21 * var(--u)); line-height: calc(29 * var(--u)); color: var(--muted); width: calc(1000 * var(--u)); }
 
   /* ---------- окно с вопросами поверх страницы ---------- */
   .kp { position: fixed; inset: 0; z-index: 50; background: #000; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
@@ -158,7 +169,7 @@
 <body>
 
 <!-- ===== Новый первый экран ===== -->
-<header class="slide hero" style="--k:0">
+<header class="slide hero" style="--k:0;--img:url(assets/landing/s0.jpg)">
   <div class="topbar">
     <a href="#" aria-label="Фокус"><img src="assets/fokus-logo.png" alt="Фокус"></a>
     <a href="#" data-start>Войти</a>
@@ -166,7 +177,7 @@
   <div class="hero-left">
     <h1>Коммерческое предложение для&nbsp;любого бизнеса</h1>
     <p class="lead">Шаблон КП с высокой конверсией: структура, тексты и&nbsp;дизайн слайдов — за&nbsp;9&nbsp;вопросов.</p>
-    <button class="btn" data-start>Заполнить под мой бизнес
+    <button class="btn" data-start>Сгенерировать
       <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h11M10 5l4 4-4 4"/></svg>
     </button>
     <p class="trust">Нам доверяют 40&nbsp;000+ пользователей</p>
@@ -175,34 +186,35 @@
 </header>
 
 <!-- ===== Существующий слайд «Оформление без усилий» ===== -->
-<section class="slide" style="--k:1">
-  <button class="cta-over" style="--y:174" data-start>Начать создание КП</button>
-  <h2 class="t" style="--x:28;--y:384;--fs:53.1;--lh:63.72;--w:900">Оформление коммерческого<br>предложения без усилий</h2>
-  <p class="t" style="--x:28;--y:567;--fs:27.21;--lh:32.65;--w:1120">Процесс создания коммерческого предложения теперь полностью автоматизирован.<br>Создавать коммерческое предложение вручную — значит подбирать шрифты,<br>выравнивать блоки, править отступы и переписывать текст по 10 раз. «Фокус»<br>делает это автоматически. Всё, что нужно — описать продукт, а дальше алгоритмы<br>сами соберут предложение – от дизайна до текста.</p>
+<section class="slide short" style="--k:1;--img:url(assets/landing/s1.jpg)">
+  <i class="patch" aria-hidden="true"></i><!-- закрывает розовую кнопку, нарисованную в фоне слайда -->
+
+  <h2 class="t" style="--x:28;--y:234;--fs:53.1;--lh:63.72;--w:900">Оформление коммерческого<br>предложения без усилий</h2>
+  <p class="t" style="--x:28;--y:386;--fs:27.21;--lh:32.65;--w:1120">Процесс создания коммерческого предложения теперь полностью автоматизирован.<br>Создавать коммерческое предложение вручную — значит подбирать шрифты,<br>выравнивать блоки, править отступы и переписывать текст по 10 раз. «Фокус»<br>делает это автоматически. Всё, что нужно — описать продукт, а дальше алгоритмы<br>сами соберут предложение – от дизайна до текста.</p>
 </section>
 
 <!-- ===== НОВОЕ: пример презентации КП (под запросы «структура КП пример», «слайды для КП») ===== -->
 <section class="seo" id="example">
   <h2>Пример коммерческого предложения</h2>
   <div class="pile" id="pile" aria-label="Слайды примера коммерческого предложения"></div>
-  <button class="btn" data-start>Собрать КП под свой бизнес
+  <button class="btn" data-start>Сгенерировать КП
     <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h11M10 5l4 4-4 4"/></svg>
   </button>
 </section>
 
 <!-- ===== Существующие слайды ===== -->
-<section class="slide" style="--k:2">
-  <p class="t" style="--x:28;--y:341;--fs:26.56;--lh:31.87;--w:800"><b>Дизайн без дизайнера</b><br>«Фокус» сам подбирает шрифты и цвета, расставляет акценты<br>и визуальные блоки. Итог — презентабельный документ,<br>который можно сразу отправлять клиенту.</p>
+<section class="slide" style="--k:2;--img:url(assets/landing/s2.jpg)">
+  <p class="t" style="--x:28;--y:341;--fs:26.56;--lh:31.87;--w:900"><b>Дизайн без дизайнера</b><br>«Фокус» сам подбирает шрифты и цвета, расставляет акценты<br>и визуальные блоки. Итог — презентабельный документ,<br>который можно сразу отправлять клиенту.</p>
 </section>
 
-<section class="slide" style="--k:3">
+<section class="slide" style="--k:3;--img:url(assets/landing/s3.jpg)">
   <button class="cta-over" style="--y:84" data-start>Начать создание КП</button>
-  <p class="t" style="--x:28;--y:341;--fs:26.56;--lh:31.87;--w:800"><b>AI-генерация контента для коммерческого предложения</b><br>Достаточно описать продукт или услугу в диалоговом окне<br>и «Фокус» предложит заголовки, структуру и тексты —<br>их можно отредактировать прямо в интерфейсе.</p>
+  <p class="t" style="--x:28;--y:341;--fs:26.56;--lh:31.87;--w:900"><b>AI-генерация контента для коммерческого предложения</b><br>Достаточно описать продукт или услугу в диалоговом окне<br>и «Фокус» предложит заголовки, структуру и тексты —<br>их можно отредактировать прямо в интерфейсе.</p>
 </section>
 
-<section class="slide" style="--k:4">
-  <p class="t" style="--x:28;--y:71;--fs:26.56;--lh:31.87;--w:700"><b>Интуитивно понятный интерфейс</b><br>Все просто: открыть — заполнить — отправить.<br>Не нужен опыт в дизайне, маркетинге или верстке.<br>Справится даже тот, кто раньше делал КП в «Word».</p>
-  <button class="cta-over" style="--y:624" data-start>Начать создание КП</button>
+<section class="slide split" style="--k:4;--img:url(assets/landing/s4.jpg)"><i class="lay" style="--ty:0;--h:600;--by:0"></i><i class="lay" style="--ty:600;--h:50;--by:735"></i><i class="lay" style="--ty:650;--h:210;--by:600"></i>
+  <p class="t" style="--x:28;--y:71;--fs:26.56;--lh:31.87;--w:900"><b>Интуитивно понятный интерфейс</b><br>Все просто: открыть — заполнить — отправить.<br>Не нужен опыт в дизайне, маркетинге или верстке.<br>Справится даже тот, кто раньше делал КП в «Word».</p>
+  <button class="cta-over" style="--y:674" data-start>Начать создание КП</button>
 </section>
 
 <!-- ===== НОВОЕ: как составить КП (под запрос «как составить кп») ===== -->
@@ -217,31 +229,31 @@
   </ol>
 </section>
 
-<section class="slide" style="--k:5">
-  <p class="t" style="--x:28;--y:71;--fs:26.56;--lh:31.87;--w:800"><b>Стикеры, иконки, интерактивные элементы</b><br>Возможность добавить визуальные элементы, чтобы показать<br>преимущества наглядно: диаграммы, стикеры, кнопки<br>и прочее — все под рукой.</p>
+<section class="slide" style="--k:5;--img:url(assets/landing/s5.jpg)">
+  <p class="t" style="--x:28;--y:71;--fs:26.56;--lh:31.87;--w:900"><b>Стикеры, иконки, интерактивные элементы</b><br>Возможность добавить визуальные элементы, чтобы показать<br>преимущества наглядно: диаграммы, стикеры, кнопки<br>и прочее — все под рукой.</p>
   <p class="t" style="--x:28;--y:619;--fs:30.98;--lh:37.18;--w:1100"><b>Красиво на любых устройствах</b><br>КП, созданное в «Фокусе», хорошо смотрится и на ноутбуке,<br>и на телефоне. Ничего не съезжает, не теряется и не требует доработки.</p>
 </section>
 
-<section class="slide" style="--k:6">
+<section class="slide" style="--k:6;--img:url(assets/landing/s6.jpg)">
   <button class="cta-over" style="--y:354" data-start>Начать создание КП</button>
   <p class="t" style="--x:28;--y:589;--fs:28.32;--lh:33.99;--w:920"><b>Удобный экспорт</b><br>Готовое предложение можно скачать в PDF или PPTX<br>либо поделиться ссылкой на онлайн-версию. Удобно для отправки<br>по почте или в мессенджере.</p>
 </section>
 
-<section class="slide" style="--k:7">
+<section class="slide" style="--k:7;--img:url(assets/landing/s7.jpg)">
   <p class="t" style="--x:28;--y:607;--fs:28.02;--lh:33.63;--w:960"><a href="#" data-start><b>Готовые шаблоны коммерческих предложений для быстрого старта</b></a><br>Начать работу с заполнения готового шаблона легко. Это позволит<br>структурировать информацию и получить готовый результат<br>за считанные минуты.</p>
 </section>
 
-<section class="slide" style="--k:8">
+<section class="slide" style="--k:8;--img:url(assets/landing/s8.jpg)">
   <a class="tpl-label" href="#" style="--x:172;--y:345;--fs:26.42">Коммерческое предложение</a>
   <a class="tpl-label" href="#" style="--x:902;--y:342;--fs:28.87">Стратегия роста бизнеса</a>
   <a class="tpl-label" href="#" style="--x:207;--y:747;--fs:28.78">Бизнес-предложение</a>
   <a class="tpl-label" href="#" style="--x:975;--y:749;--fs:27.37">Оказание услуг</a>
 </section>
 
-<section class="slide" style="--k:9">
-  <p class="t" style="--x:28;--y:83;--fs:28.53;--lh:34.24;--w:700"><b>Фирменные шрифты Студии Артемия Лебедева</b><br>50 дизайнерских шрифтов — чтобы документ<br>был не только грамотным, но и стильным.</p>
+<section class="slide" style="--k:9;--img:url(assets/landing/s9.jpg)">
+  <p class="t" style="--x:28;--y:83;--fs:28.53;--lh:34.24;--w:900"><b>Фирменные шрифты Студии Артемия Лебедева</b><br>50 дизайнерских шрифтов — чтобы документ<br>был не только грамотным, но и стильным.</p>
   <h2 class="t" style="--x:28;--y:363;--fs:61.95;--lh:74.34;--w:800">Из коммерческого<br>предложения в лендинг</h2>
-  <p class="t" style="--x:28;--y:567;--fs:25.98;--lh:31.18;--w:1100">Клиенту удобнее смотреть в браузере, чем скачивать PDF?<br>Сделать из коммерческого предложения лендинг с формой захвата,<br>кнопками и ссылками — просто. Такой документ можно использовать<br>как страницу для вебинара, рекламной рассылки или презентации услуги.</p>
+  <p class="t" style="--x:28;--y:567;--fs:25.98;--lh:31.18;--w:1100">Клиенту удобнее смотреть в браузере, чем скачивать PDF?<br>Сделать из коммерческого предложения лендинг с формой захвата, кнопками<br>и ссылками — просто. Такой документ можно использовать как страницу<br>для вебинара, рекламной рассылки или презентации услуги.</p>
 </section>
 
 <!-- ===== НОВОЕ: частые вопросы (разметка FAQPage ниже) ===== -->
@@ -250,7 +262,7 @@
   <div class="faq" id="faqList"></div>
 </section>
 
-<footer class="slide" style="--k:10">
+<footer class="slide" style="--k:10;--img:url(assets/landing/s10.jpg)">
   <button class="cta-over" style="--y:56" data-start>Начать создание КП</button>
   <p class="t" style="--x:28;--y:660;--fs:23.29;--lh:27.95;--w:600">Конструктор идеальных презентаций — <a href="https://fokus.am">fokus.am</a></p>
   <p class="t" style="--x:886;--y:661;--fs:22.32;--lh:26.78;--w:500">Создано в <a href="https://www.artlebedev.ru">Студии Артемия Лебедева</a></p>
@@ -345,13 +357,16 @@ typo(document.body);
 
 /* Все кнопки «Начать / Заполнить» открывают вопросы поверх страницы, адрес не меняется */
 const kp = document.getElementById('kp'), frame = document.getElementById('kpFrame');
+const KP_SRC = 'index.html?embed=1&slides=5';
+/* окно с вопросами подгружается заранее, пока человек читает страницу, и после закрытия начинается заново */
+function loadKp() { frame.src = KP_SRC; frame.dataset.src = KP_SRC; }
 function openKp() {
-  const src = `index.html?embed=1&slides=${n}`;
-  if (frame.dataset.src !== src) { frame.src = src; frame.dataset.src = src; }
+  if (frame.dataset.src !== KP_SRC) loadKp();
   kp.classList.add('on'); document.body.classList.add('kp-open');
   setTimeout(() => frame.focus(), 400);
 }
-function closeKp() { kp.classList.remove('on'); document.body.classList.remove('kp-open'); }
+function closeKp() { kp.classList.remove('on'); document.body.classList.remove('kp-open'); setTimeout(loadKp, 500); }
+addEventListener('load', () => setTimeout(loadKp, 1200));
 document.addEventListener('click', e => {
   const s = e.target.closest('[data-start]');
   if (s) { e.preventDefault(); openKp(); }

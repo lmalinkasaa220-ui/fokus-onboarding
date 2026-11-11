@@ -37,7 +37,7 @@
   .sparkles.on { opacity: 1; }
   .spark { position: absolute; color: #fff; filter: drop-shadow(0 0 4px #7b2bff) drop-shadow(0 0 14px #6100e9); animation: twinkle var(--d, 4s) ease-in-out var(--dl, 0s) infinite; }
   @keyframes twinkle { 0%, 100% { opacity: .35; transform: scale(.7) rotate(0); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }
-  body[data-screen="structure"] .logo, body[data-screen="style"] .logo, body[data-screen="loading"] .logo { opacity: 0; pointer-events: none; }
+  body[data-screen="structure"] .logo, body[data-screen="style"] .logo, body[data-screen="loading"] .logo, body[data-screen="deck"] .logo { opacity: 0; pointer-events: none; }
   .logo { transition: opacity .4s; }
 
   /* ---------- Лого ---------- */
@@ -297,6 +297,82 @@
     *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   }
   body.embed #landing { display: none; }
+
+  /* ---------- Готовая презентация ---------- */
+  body[data-screen="deck"] .logo { opacity: 0; pointer-events: none; }
+  .deck.is-on { display: grid; grid-template-columns: 260px minmax(0, 1fr); grid-template-rows: 84px minmax(0, 1fr); height: 100vh; background: #07090f; animation: screenIn .6s var(--ease) both; }
+  .deck-head { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 28px; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .deck-head h2 { margin: 0; font-size: 20px; font-weight: 500; }
+  .deck-head > :first-child { justify-self: start; }
+  .deck-head .right { justify-self: end; display: flex; gap: 12px; }
+  .deck-head .ghost { height: 44px; padding: 0 20px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4); font-size: 16px; font-weight: 500; }
+  .deck-head .ghost:hover { background: rgba(255,255,255,.08); }
+  .thumbs { overflow: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; border-right: 1px solid rgba(255,255,255,.08); }
+  .thumb { position: relative; display: block; flex: none; border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 2px transparent; transition: box-shadow .2s; }
+  .thumb .sw { --k: .1146; }
+  .thumb.on { box-shadow: 0 0 0 2px #6EA8FF; }
+  .thumb em { position: absolute; left: 8px; bottom: 6px; font-style: normal; font-size: 12px; background: rgba(0,0,0,.6); padding: 2px 7px; border-radius: 6px; }
+  .deck-stage { position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; min-width: 0; }
+  .stage-box { border-radius: 12px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.55); }
+  .arr { position: absolute; top: 50%; width: 48px; height: 48px; margin-top: -24px; border-radius: 50%; background: rgba(255,255,255,.1); font-size: 22px; }
+  .arr:hover { background: rgba(255,255,255,.18); }
+  .arr:disabled { opacity: .25; cursor: default; }
+  .arr.prev { left: 20px; } .arr.next { right: 20px; }
+  .counter { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; font-size: 15px; color: #8c97b2; }
+  @media (max-width: 900px) { .deck.is-on { grid-template-columns: 1fr; } .thumbs { display: none; } .deck-head .ghost { display: none; } }
+  /* слайды: рисуются в 1920×1080, масштабируются через --k */
+  .sw { position: relative; width: calc(1920px * var(--k)); height: calc(1080px * var(--k)); overflow: hidden; }
+  .ds { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; transform: scale(var(--k)); overflow: hidden; background: linear-gradient(#101729, #0b101e); color: #fff; font-family: var(--font); text-align: left; }
+  .ds * { box-sizing: border-box; }
+  .ds.light { background: #ecedf1; color: #0f1325; }
+  .dpill { position: absolute; left: 96px; top: 64px; padding: 12px 24px; border-radius: 999px; background: #28314a; font-size: 24px; font-weight: 500; line-height: 1.2; }
+  .dpill.acc { background: linear-gradient(90deg, #6ea8ff, #40e8c5); color: #07111f; }
+  .ds.light .dpill { background: #141a2c; color: #fff; }
+  .dco { position: absolute; right: 96px; top: 70px; font-size: 24px; font-weight: 500; opacity: .7; }
+  .dfl { position: absolute; left: 96px; bottom: 52px; font-size: 22px; color: #8c97b2; }
+  .dfr { position: absolute; right: 96px; bottom: 52px; font-size: 22px; color: #8c97b2; }
+  .ds.light .dfl, .ds.light .dfr { color: #6b7488; }
+  .dhead { position: absolute; left: 96px; top: 150px; width: 1500px; }
+  .dhead h1 { margin: 0; font-size: 84px; line-height: 92px; font-weight: 700; letter-spacing: -.01em; }
+  .dhead p { margin: 16px 0 0; font-size: 30px; color: #8c97b2; }
+  .ds.light .dhead p { color: #6b7488; }
+  .dcard { position: absolute; display: flex; flex-direction: column; justify-content: space-between; padding: 36px; border-radius: 32px; background: #1b2339; overflow: hidden; }
+  .dcard .lb { font-size: 24px; color: #8c97b2; }
+  .dcard .tt { font-size: 44px; line-height: 52px; font-weight: 700; }
+  .dcard.acc { background: linear-gradient(90deg, #6ea8ff, #40e8c5); color: #07111f; }
+  .dcard.acc .lb { color: rgba(7,17,31,.7); }
+  .dbig { position: absolute; font-weight: 700; line-height: 1.07; letter-spacing: -.01em; overflow: visible; }
+  .dbig.ink { color: #0f1325; }
+  .dgrad { background: linear-gradient(90deg, #6ea8ff, #40e8c5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .dkv { position: absolute; }
+  .dkv span { display: block; font-size: 24px; color: #8c97b2; }
+  .dkv b { display: block; font-size: 40px; margin-top: 6px; }
+  .arcs { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+  .dcircle { position: absolute; left: -290px; top: 50px; width: 1180px; height: 1180px; border-radius: 50%; background: linear-gradient(90deg, #6ea8ff, #40e8c5); }
+  .dpills { position: absolute; display: flex; flex-wrap: wrap; gap: 16px; }
+  .dpills .dpill { position: static; }
+  .dsub { position: absolute; font-size: 30px; color: #8c97b2; }
+  .ph { border: 2px dashed currentColor; border-radius: 10px; padding: 0 12px; font-weight: 400; opacity: .5; }
+  .darrow { position: absolute; width: 104px; text-align: center; font-size: 56px; font-weight: 500; color: #8c97b2; }
+  .dchip { position: absolute; height: 120px; border-radius: 28px; background: #d6d9e1; padding: 36px; font-size: 34px; font-weight: 500; color: #0f1325; }
+  .dchip.acc { background: linear-gradient(90deg, #6ea8ff, #40e8c5); }
+  .dstrip { position: absolute; left: 96px; top: 900px; width: 1728px; height: 72px; border-radius: 24px; background: #d6d9e1; color: #0f1325; font-size: 30px; font-weight: 500; padding: 0 32px; display: flex; align-items: center; }
+  .dtar { position: absolute; border-radius: 32px; padding: 36px; background: #141a2c; color: #fff; overflow: hidden; }
+  .dtar.acc { background: linear-gradient(90deg, #6ea8ff, #40e8c5); color: #07111f; }
+  .dtar .lb { font-size: 24px; opacity: .6; }
+  .dtar .nm { font-size: 40px; font-weight: 500; margin-top: 12px; }
+  .dtar .pr { font-size: 64px; line-height: 72px; font-weight: 700; margin-top: 28px; letter-spacing: -.01em; }
+  .dtar hr { border: 0; height: 2px; background: currentColor; opacity: .18; margin: 28px 0; }
+  .dtar .ls { font-size: 28px; line-height: 44px; opacity: .88; }
+  .dline { position: absolute; background: #2a3350; height: 2px; }
+  .dmark { position: absolute; width: 14px; height: 14px; background: #6b7790; }
+  .dmark.acc { background: linear-gradient(90deg, #6ea8ff, #40e8c5); }
+  .dstage b { position: absolute; font-size: 64px; line-height: 72px; font-weight: 700; letter-spacing: -.01em; }
+  .dstage span { position: absolute; font-size: 28px; line-height: 40px; color: #8c97b2; }
+  .dtrack { position: absolute; height: 76px; border-radius: 18px; background: #232c45; overflow: hidden; }
+  .dtrack i { display: block; height: 100%; border-radius: 18px; background: #3a4668; font-style: normal; font-size: 32px; font-weight: 500; padding: 20px 28px; white-space: nowrap; }
+  .dtrack i.acc { background: linear-gradient(90deg, #6ea8ff, #40e8c5); color: #07111f; }
+  .dlab { position: absolute; font-size: 28px; color: #8c97b2; }
 </style>
 </head>
 <body>
@@ -379,6 +455,23 @@
     <button class="hot" style="left:1.1%;top:2.4%;width:6%;height:5.2%" data-nav="structure" aria-label="Назад"></button>
     <button class="hot" style="left:80.2%;top:2.9%;width:18.6%;height:4.9%" data-nav="generate" aria-label="Сгенерировать презентацию"></button>
     <button class="hot" style="left:29.4%;top:98.6%;width:41.2%;height:1.4%" data-nav="generate" aria-label="Сгенерировать презентацию"></button>
+  </div>
+</section>
+
+
+<!-- Готовая презентация: слайды собираются из ответов (шаблон КП) -->
+<section class="screen deck" id="deck">
+  <header class="deck-head">
+    <button class="back ghost" data-nav="structure">Назад</button>
+    <h2>Презентация готова</h2>
+    <div class="right"><button class="ghost" id="deckFull">На весь экран</button><button class="primary" data-nav="restart">Создать новую</button></div>
+  </header>
+  <nav class="thumbs" id="thumbs" aria-label="Слайды"></nav>
+  <div class="deck-stage" id="stage">
+    <button class="arr prev" id="deckPrev" aria-label="Предыдущий слайд">←</button>
+    <div class="stage-box" id="stageBox"></div>
+    <button class="arr next" id="deckNext" aria-label="Следующий слайд">→</button>
+    <div class="counter" id="deckCount"></div>
   </div>
 </section>
 
@@ -826,8 +919,10 @@ function openScreen(id) {
   if (id === 'structure') renderOutline(), setBg({ stars: true });
   if (id === 'login') setBg({ sand: .55 });
   if (id === 'style') setBg({});
+  if (id === 'deck') setBg({});
   sand.set({ split: 0 });
   $(id).classList.add('is-on');
+  if (id === 'deck') { renderDeck(); requestAnimationFrame(fitDeck); }
   scrollTo(0, 0);
 }
 function openFlowAt(i) {
@@ -885,10 +980,10 @@ function buildOutline(a) {
     pains: pains.length ? `Задача клиента: ${pains.map(lc).join(', ')}` : 'Задача клиента',
     loss: `Цена бездействия: ${losses.length ? losses.map(lc).join(', ') : 'клиент теряет деньги и время'}`,
     result: `Результат: ${res.length ? res.map(lc).join(', ') : 'что получит клиент'}`,
-    why: 'Почему выбирают нас',
+    about: `О компании${(a.company || '').trim() ? ' ' + co : ''}`,
+    solution: `Решение: ${lc((a.product || '').trim() || 'что мы предлагаем')}`,
+    benefits: 'Что получит клиент',
     case: a.proofValue ? `Кейс${a.proofWhere ? ' ' + a.proofWhere : ''}: ${lc((a.proofMetric === OWN_METRIC ? a.proofMetricOther : a.proofMetric) || res[0] || 'результат')} ${a.proofValue}` : 'Кейсы и результаты клиентов',
-    numbers: 'Опыт в цифрах и отзывы заказчиков',
-    team: 'Команда и подход к работе',
     stages: 'Этапы работы и сроки',
     trust: obj.length ? `Снимаем сомнения: ${obj.map(lc).join(', ')}` : 'Как мы отвечаем за качество',
     price: cond ? `Стоимость и ${lc(cond.type)}${cond.text ? ': ' + lc(cond.text) : ''}` : `Стоимость: ${lc(a.price || 'индивидуальный расчет')}`,
@@ -896,8 +991,9 @@ function buildOutline(a) {
   };
   const n = parseInt(a.slides) || 5;
   const order = n <= 5 ? ['cover', 'pains', 'result', 'price', 'next']
-    : n <= 8 ? ['cover', 'pains', 'loss', 'result', 'case', 'trust', 'price', 'next']
-    : ['cover', 'pains', 'loss', 'result', 'why', 'case', 'numbers', 'team', 'stages', 'trust', 'price', 'next'];
+    : n <= 8 ? ['cover', 'about', 'pains', 'result', 'case', 'trust', 'price', 'next']
+    : ['cover', 'about', 'pains', 'loss', 'solution', 'result', 'benefits', 'case', 'stages', 'trust', 'price', 'next'];
+  S.outlineKeys = order.slice();   // тип каждого слайда — по нему рисуется презентация, даже если название поправили
   return order.map(k => T[k]);
 }
 const ICON_HANDLE = '<svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect y="0" width="16" height="1.6" rx=".8"/><rect y="5.2" width="16" height="1.6" rx=".8"/><rect y="10.4" width="16" height="1.6" rx=".8"/></svg>';
@@ -905,7 +1001,7 @@ const ICON_X = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stro
 function renderOutline(focusLast) {
   if (!S.outline) S.outline = buildOutline(S.a);
   $('outline').innerHTML = S.outline.map((t, i) => `
-    <li draggable="false" data-i="${i}" style="animation-delay:${i * .04}s">
+    <li draggable="false" data-i="${i}" data-k="${(S.outlineKeys || [])[i] || 'custom'}" style="animation-delay:${i * .04}s">
       <span class="handle" title="Перетащить">${ICON_HANDLE}</span>
       <span class="num">${i + 1}.</span>
       <input value="${esc(t)}" data-oi="${i}" aria-label="Слайд ${i + 1}">
@@ -919,7 +1015,7 @@ function renderOutline(focusLast) {
   list.addEventListener('input', e => { if (e.target.dataset.oi) S.outline[+e.target.dataset.oi] = e.target.value; });
   list.addEventListener('click', e => {
     const d = e.target.closest('[data-del]');
-    if (d) { S.outline.splice(+d.dataset.del, 1); renderOutline(); }
+    if (d) { S.outline.splice(+d.dataset.del, 1); (S.outlineKeys || []).splice(+d.dataset.del, 1); renderOutline(); }
   });
   list.addEventListener('pointerdown', e => { const li = e.target.closest('li'); if (li && e.target.closest('.handle')) li.draggable = true; });
   list.addEventListener('dragstart', e => { dragEl = e.target.closest('li'); dragEl.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
@@ -933,11 +1029,138 @@ function renderOutline(focusLast) {
   list.addEventListener('dragend', () => {
     if (!dragEl) return;
     S.outline = [...list.children].map(li => li.querySelector('input').value);
+    S.outlineKeys = [...list.children].map(li => li.dataset.k || 'custom');
     dragEl = null;
     renderOutline();
   });
-  $('addRow').addEventListener('click', () => { S.outline.push(''); renderOutline(true); });
+  $('addRow').addEventListener('click', () => { S.outline.push(''); (S.outlineKeys = S.outlineKeys || []).push('custom'); renderOutline(true); });
 })();
+
+/* =========================================================
+   Готовая презентация: слайды собираются из ответов опросника
+   (шаблон КП, макет v3 — тёмный фон, плоские карточки, большие цифры)
+   ========================================================= */
+const ARCS = (cx, cy) => { let c = ''; for (let i = 0, r = 160; r <= 1400; r += 70, i++) c += `<circle cx="${cx}" cy="${cy}" r="${r}" stroke="url(#dg)" stroke-width="2" opacity="${Math.max(.12, .9 - i * .07).toFixed(2)}"/>`; return `<svg class="arcs" viewBox="0 0 1920 1080" fill="none"><defs><linearGradient id="dg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6EA8FF"/><stop offset="1" stop-color="#40E8C5"/></linearGradient></defs>${c}</svg>`; };
+function deckData() {
+  const a = S.a, lc = s => s ? s.charAt(0).toLowerCase() + s.slice(1) : s, up = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  const one = (v, other, o) => v === o ? (a[other] || '') : (v || '');
+  const conds = (a.conditions || []).filter(c => c.type && (c.type !== MANUAL || (c.text || '').trim())).map(c => c.type === MANUAL ? c.text.trim() : `${c.type}${(c.text || '').trim() ? ': ' + c.text.trim() : ''}`);
+  const price = a.price && a.price !== 'Пока не знаю' ? a.price : '';
+  return {
+    gen: a.texts !== 'Только структура, текст впишу сам',
+    co: (a.company || '').trim() || 'Название компании', site: (a.site || '').trim() || 'сайт компании',
+    product: up((a.product || '').trim()) || 'Продукт или услуга',
+    sphere: one(a.sphere, 'sphereOther', OTHER), industry: a.industry === MANUAL ? (a.industryOther || '') : (a.industry || ''),
+    b2c: a.segment === 'Людям', audience: (a.audience || []).filter(x => x !== 'Не знаю'),
+    pains: listOf(a, 'pains'), losses: listOf(a, 'losses'), results: listOf(a, 'results'),
+    metric: a.proofMetric === OWN_METRIC ? (a.proofMetricOther || '') : (a.proofMetric || ''), value: (a.proofValue || '').trim(), where: (a.proofWhere || '').trim(),
+    obj: [...(a.objections || []).filter(x => x !== 'Не знаю'), a.objectionOther].filter(Boolean),
+    price, conds, cta: up(a.cta === OTHER ? (a.ctaOther || '') : (a.cta || '')) || 'Оставить заявку', lc, up,
+  };
+}
+const ANSWER = { 'Высокая стоимость': 'Первый шаг — пробный, оплата по результату', 'Сомнения в качестве': 'Кейсы с цифрами и гарантия результата', 'Неясные сроки': 'Чёткий план по этапам и отчёт каждую неделю', 'Компания еще незнакома клиенту': 'Открытые кейсы, отзывы и референсы клиентов', 'Сложно перейти с текущего решения': 'Берём перенос на себя, работа идёт без остановки', 'Нужно согласовать с руководством': 'Готовим материалы для согласования с руководством' };
+const CHAPTER = { about: 'О компании', pains: 'Задача клиента', loss: 'Цена бездействия', result: 'Результат', benefits: 'Результаты', case: 'Кейс', stages: 'Этапы и сроки', trust: 'Сомнения', price: 'Стоимость' };
+const SLIDE = (() => {
+  const E = esc;
+  const ph = t => `<span class="ph">${t || 'Текст слайда'}</span>`;
+  const G = (D, t) => D.gen ? E(t) : ph();
+  const chrome = (n, D, ch) => `${ch ? `<div class="dpill">${E(ch)}</div>` : ''}<div class="dco">${E(D.co)}</div><div class="dfl">${E(D.site)}</div><div class="dfr">${String(n).padStart(2, '0')}</div>`;
+  const head = (t, sub) => `<div class="dhead"><h1>${t}</h1>${sub ? `<p>${sub}</p>` : ''}</div>`;
+  const card = (x, y, w, h, lb, tt, acc, fs) => `<div class="dcard${acc ? ' acc' : ''}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><div class="lb">${lb}</div><div class="tt"${fs ? ` style="font-size:${fs}px;line-height:${Math.round(fs * 1.15)}px"` : ''}>${tt}</div></div>`;
+  const row = (cnt, gap = 48) => Math.floor((1728 - (cnt - 1) * gap) / cnt);
+  return {
+    cover: (n, D) => ({ html: `${ARCS(1760, 180)}<div class="dpill acc" style="top:96px">Коммерческое предложение</div><div class="dco" style="top:106px">${E(D.co)}</div>
+      <div class="dbig" data-fit style="left:96px;top:280px;width:1400px;height:520px;font-size:116px;line-height:124px">${E(D.product)}</div>
+      <div class="dkv" style="left:96px;top:880px"><span>${D.industry ? 'сегмент клиента' : 'клиенты'}</span><b>${E(D.industry || (D.b2c ? 'Частные клиенты' : 'Компании'))}</b></div>
+      <div class="dkv" style="left:900px;top:880px"><span>сайт</span><b>${E(D.site)}</b></div>` }),
+    about: (n, D) => ({ html: `${chrome(n, D, CHAPTER.about)}${head('О компании', E(D.co))}
+      ${card(96, 420, 544, 480, 'сфера', E(D.sphere || 'Сфера бизнеса'), false)}${card(688, 420, 544, 480, 'что делаем', E(D.product), true, 40)}${card(1280, 420, 544, 480, 'сайт', E(D.site), false)}` }),
+    pains: (n, D) => { const list = (D.pains.length ? D.pains : ['Задача клиента']).slice(0, 3), c = list.length, h = Math.floor((558 - (c - 1) * 24) / c);
+      const why = D.industry ? `В нише «${D.industry}» спрос вырос, а привычные способы работы приносят меньше результата` : 'Привычные способы работы перестали приносить результат — нужен системный подход';
+      return { html: `${chrome(n, D, CHAPTER.pains)}${head('Задачи клиента', 'Что нужно решить')}${list.map((t, i) => card(96, 420 + i * (h + 24), 900, h, 'задача 0' + (i + 1), E(up2(t)), false, 44)).join('')}${card(1032, 420, 792, 558, 'почему это важно сейчас', G(D, why), true, 48)}` }; },
+    loss: (n, D) => { const list = (D.losses.length ? D.losses : ['Деньги', 'Клиентов и выручку', 'Время команды']).slice(0, 3), c = list.length, w = row(c);
+      return { html: `${chrome(n, D, CHAPTER.loss)}${head('Цена бездействия', 'Что клиент теряет, если ничего не менять')}${list.map((t, i) => `<div class="dpill" style="left:${96 + i * (w + 48)}px;top:420px">потери</div>` + card(96 + i * (w + 48), 490, w, 440, G(D, 'каждый месяц без изменений'), E(up2(t)), i === (c > 2 ? 1 : 0), 64)).join('')}` }; },
+    solution: (n, D) => { const steps = ['Анализ задачи клиента', 'Запуск решения', 'Результат и отчётность'];
+      return { html: `<div class="dco">${E(D.co)}</div><div class="dfl">${E(D.site)}</div><div class="dfr">${String(n).padStart(2, '0')}</div><i class="dcircle"></i><div class="dpill" style="top:220px">Решение</div>
+        <div class="dbig ink" data-fit style="left:96px;top:310px;width:720px;height:480px;font-size:84px;line-height:92px;color:#07111f">Решение: ${E(D.lc(D.product))}</div>
+        ${steps.map((t, i) => card(1000, 200 + i * 224, 824, 200, 'шаг 0' + (i + 1), G(D, t), false, 44)).join('')}
+        <div class="dpills" style="left:1000px;top:880px;width:824px">${(D.results.length ? D.results : [D.gen ? 'Результат для клиента' : '']).slice(0, 3).map(t => `<div class="dpill">${t ? E(t) : ph()}</div>`).join('')}</div>` }; },
+    result: (n, D) => { const big = D.value || up2(D.results[0] || 'Результат'), fs = D.value ? 420 : 130, list = D.results.slice(0, 3), c = Math.max(list.length, 1), w = row(c);
+      const cap = [D.metric ? D.lc(D.metric) : '', D.where].filter(Boolean).join(' · ');
+      return { light: true, html: `${chrome(n, D, CHAPTER.result)}<div class="dbig ink" data-fit style="left:70px;top:150px;width:1700px;height:470px;font-size:${fs}px;line-height:${Math.round(fs * 1.02)}px;letter-spacing:-${D.value ? 12 : 3}px">${E(big)}</div>
+        <div class="dsub" style="left:96px;top:660px;width:1500px;font-size:36px;color:#4a5470">${cap ? E(cap) : ph('показатель и срок')}</div>
+        ${(list.length ? list : ['']).map((t, i) => `<div class="dchip${i === Math.min(1, c - 1) ? ' acc' : ''}" style="left:${96 + i * (w + 48)}px;top:790px;width:${w}px">${t ? E(t) : ph()}</div>`).join('')}` }; },
+    benefits: (n, D) => { const list = (D.results.length ? D.results : ['Больше заявок', 'Ниже стоимость заявки', 'Прозрачная отчётность']).slice(0, 5), c = list.length; let cards;
+      if (c <= 3) { const w = row(c); cards = list.map((t, i) => card(96 + i * (w + 48), 380, w, 560, 'результат 0' + (i + 1), E(up2(t)), i === Math.min(1, c - 1), 52)).join(''); }
+      else { const w1 = row(3), w2 = row(c - 3); cards = list.map((t, i) => i < 3 ? card(96 + i * (w1 + 48), 380, w1, 280, 'результат 0' + (i + 1), E(up2(t)), i === 1, 40) : card(96 + (i - 3) * (w2 + 48), 700, w2, 270, 'результат 0' + (i + 1), E(up2(t)), false, 40)).join(''); }
+      return { html: `${chrome(n, D, CHAPTER.benefits)}${head('Что получит клиент', 'Результаты, которые видны в отчёте')}${cards}` }; },
+    case: (n, D) => { if (!D.value) return { html: `${chrome(n, D, CHAPTER.case)}${head('Кейс', D.where ? E(up2(D.where)) : 'Подтверждённый пример работы')}${card(96, 420, 1728, 540, 'пример', G(D, 'Результат клиента с цифрой и сроком'), true, 64)}` };
+      const m = D.value.match(/(\d+[.,]?\d*)\s*%/), neg = /^[−\-–]/.test(D.value), p = m ? parseFloat(m[1].replace(',', '.')) : 0;
+      let right = card(960, 330, 864, 380, 'до и после', G(D, 'Здесь будет динамика показателя'), false, 44);
+      if (m) { const before = 100, after = neg ? 100 - p : 100 + p, mx = Math.max(before, after); right = `<div class="dlab" style="left:960px;top:350px">до</div><div class="dtrack" style="left:1100px;top:330px;width:724px"><i style="width:${before / mx * 100}%">исходный уровень</i></div><div class="dlab" style="left:960px;top:490px">после</div><div class="dtrack" style="left:1100px;top:470px;width:724px"><i class="acc" style="width:${after / mx * 100}%">${E(D.value)}</i></div><div class="dsub" style="left:1100px;top:600px;width:724px;font-size:26px">${D.metric ? E(D.lc(D.metric)) : ''}</div>`; }
+      return { html: `${chrome(n, D, CHAPTER.case)}<div class="dbig" data-fit style="left:96px;top:150px;width:1500px;height:70px;font-size:56px;line-height:64px">${D.where ? E(up2(D.where)) : ph('клиент и срок')}</div>
+        <div class="dbig dgrad" data-fit style="left:84px;top:280px;width:860px;height:250px;font-size:240px;line-height:250px;letter-spacing:-6px">${D.value ? E(D.value) : ph('результат')}</div>
+        <div class="dsub" style="left:96px;top:560px;width:800px">${D.metric ? E(D.lc(D.metric)) : G(D, 'показатель за период')}</div>${right}` }; },
+    stages: (n, D) => { const st = [['Аудит', '5 дней', 'Анализ задачи и текущей ситуации'], ['Запуск', '2 недели', 'Подготовка и запуск решения'], ['Первые результаты', '1 месяц', 'Выход на целевые показатели'], ['Отчёт', 'Еженедельно', 'Понятные цифры и выводы']];
+      return { html: `${chrome(n, D, CHAPTER.stages)}${head('Этапы и сроки', 'От запуска до первых результатов')}<div class="dline" style="left:96px;top:600px;width:1728px"></div>
+        ${st.map(([t, d, s], i) => { const x = 96 + i * 444; return `<div class="dpill${i === 2 ? ' acc' : ''}" style="left:${x}px;top:528px">${G(D, t)}</div><i class="dmark${i === 2 ? ' acc' : ''}" style="left:${x}px;top:594px"></i><div class="dstage"><b style="left:${x}px;top:650px;width:420px">${G(D, d)}</b><span style="left:${x}px;top:750px;width:380px">${G(D, s)}</span></div>`; }).join('')}` }; },
+    trust: (n, D) => { const list = (D.obj.length ? D.obj : ['Высокая стоимость', 'Неясные сроки', 'Компания еще незнакома клиенту']).slice(0, 3);
+      return { html: `${chrome(n, D, CHAPTER.trust)}${head('Ответы на частые сомнения')}${list.map((q, i) => { const y = 300 + i * 230; return card(96, y, 700, 190, 'сомнение 0' + (i + 1), E(up2(q)), false, 44) + `<div class="darrow" style="left:796px;top:${y + 62}px">→</div>` + card(900, y, 924, 190, 'ответ', G(D, ANSWER[q] || 'Снимаем вопрос фактами: кейсы, цифры, гарантии'), true, 38); }).join('')}` }; },
+    price: (n, D) => { const f = D.price, three = !f || f === 'От 2 до 3 пакетов', pr = '<span class="ph">___ ₽</span>', ls = D.gen ? '•  Что входит в тариф<br>•  Условия работы<br>•  Отчётность' : ph();
+      let body;
+      if (three) body = [['Старт', false], ['Рост', true], ['Максимум', false]].map(([nm, hi], i) => `<div class="dtar${hi ? ' acc' : ''}" style="left:${96 + i * 592}px;top:370px;width:544px;height:500px"><div class="lb">тариф</div><div class="nm">${nm}</div><div class="pr">${pr}</div><hr><div class="ls">${ls}</div></div>`).join('');
+      else body = `<div class="dtar acc" style="left:96px;top:370px;width:1728px;height:500px"><div class="lb">${E(f)}</div><div class="nm">${f === 'Индивидуальный расчет' ? 'Индивидуальный расчёт' : 'Стоимость'}</div><div class="pr">${f === 'Индивидуальный расчет' ? G(D, 'Стоимость определяется после обсуждения задачи') : (f === 'Цена «от»' ? 'от ' : '') + pr}</div><hr><div class="ls">${ls}</div></div>`;
+      return { light: true, html: `${chrome(n, D, CHAPTER.price)}${head('Стоимость', three ? 'Тарифы' : E(f))}${body}${D.conds.length ? `<div class="dstrip">${E(D.conds.join('  ·  '))}</div>` : ''}` }; },
+    next: (n, D) => ({ html: `${ARCS(1760, 900)}<div class="dpill acc" style="top:96px">Следующий шаг</div><div class="dco" style="top:106px">${E(D.co)}</div>
+      <div class="dbig" data-fit style="left:96px;top:260px;width:1400px;height:300px;font-size:112px;line-height:120px">${E(D.cta)}</div>
+      <div class="dsub" style="left:96px;top:560px;width:1400px">${D.conds.length ? E(D.conds.join('  ·  ')) : G(D, 'Обсудим задачу и подготовим расчёт')}</div>
+      <div class="dpill acc" style="left:96px;top:660px;height:120px;border-radius:24px;padding:36px 48px;font-size:40px;font-weight:700">${E(D.cta)}</div>
+      <div class="dsub" style="left:96px;top:860px">${E(D.site)}</div>` }),
+    custom: (n, D, t) => ({ html: `${chrome(n, D, '')}${head(E(t))}${card(96, 420, 1728, 480, 'слайд', ph('Текст слайда'), false)}` }),
+  };
+})();
+function up2(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+const DECK = { i: 0, slides: [] };
+const swrap = (s, extra = '') => `<div class="sw"${extra}><div class="ds${s.light ? ' light' : ''}">${s.html}</div></div>`;
+function fitAll(root) {
+  root.querySelectorAll('[data-fit]').forEach(el => { let fs = parseFloat(getComputedStyle(el).fontSize); while ((el.scrollHeight > el.clientHeight + 1) && fs > 28) { fs -= 4; el.style.fontSize = fs + 'px'; el.style.lineHeight = Math.round(fs * 1.08) + 'px'; el.style.letterSpacing = '0'; } });
+  root.querySelectorAll('.dcard').forEach(c => { const t = c.querySelector('.tt'); if (!t) return; let fs = parseFloat(getComputedStyle(t).fontSize); while (c.scrollHeight > c.clientHeight + 1 && fs > 22) { fs -= 2; t.style.fontSize = fs + 'px'; t.style.lineHeight = Math.round(fs * 1.15) + 'px'; } });
+}
+function renderDeck() {
+  const D = deckData(), keys = S.outlineKeys || [];
+  const items = (S.outline || []).map((t, i) => ({ t: (t || '').trim(), k: keys[i] || 'custom' })).filter(x => x.t);
+  DECK.slides = items.map((it, i) => SLIDE[it.k] ? SLIDE[it.k](i + 1, D, it.t) : SLIDE.custom(i + 1, D, it.t));
+  DECK.items = items; DECK.i = 0;
+  $('thumbs').innerHTML = DECK.slides.map((s, i) => `<button class="thumb" data-sl="${i}" aria-label="Слайд ${i + 1}">${swrap(s)}<em>${i + 1}</em></button>`).join('');
+  showSlide(0); fitDeck();
+}
+function showSlide(i) {
+  DECK.i = Math.max(0, Math.min(DECK.slides.length - 1, i));
+  const s = DECK.slides[DECK.i]; if (!s) return;
+  $('stageBox').innerHTML = swrap(s);
+  fitAll($('stageBox'));
+  document.querySelectorAll('.thumb').forEach((t, k) => t.classList.toggle('on', k === DECK.i));
+  $('deckPrev').disabled = DECK.i === 0; $('deckNext').disabled = DECK.i === DECK.slides.length - 1;
+  $('deckCount').textContent = `${DECK.i + 1} / ${DECK.slides.length}`;
+  const th = document.querySelectorAll('.thumb')[DECK.i]; if (th) th.scrollIntoView({ block: 'nearest' });
+}
+function fitDeck() {
+  const st = $('stage'); if (!st.clientWidth) return;
+  const k = Math.max(.1, Math.min((st.clientWidth - 140) / 1920, (st.clientHeight - 80) / 1080));
+  $('stageBox').style.setProperty('--k', k);
+  document.querySelectorAll('.thumbs .ds').forEach(el => { if (!el.dataset.fit) { fitAll(el); el.dataset.fit = 1; } });
+}
+addEventListener('resize', () => { if (document.body.dataset.screen === 'deck') fitDeck(); });
+$('deckPrev').addEventListener('click', () => showSlide(DECK.i - 1));
+$('deckNext').addEventListener('click', () => showSlide(DECK.i + 1));
+$('thumbs').addEventListener('click', e => { const t = e.target.closest('[data-sl]'); if (t) showSlide(+t.dataset.sl); });
+$('deckFull').addEventListener('click', () => { const el = $('stage'); if (document.fullscreenElement) document.exitFullscreen(); else el.requestFullscreen && el.requestFullscreen(); });
+document.addEventListener('fullscreenchange', () => setTimeout(fitDeck, 60));
+addEventListener('keydown', e => {
+  if (document.body.dataset.screen !== 'deck') return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); showSlide(DECK.i + 1); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); showSlide(DECK.i - 1); }
+});
 
 /* навигация между экранами */
 document.addEventListener('click', e => {
@@ -946,6 +1169,7 @@ document.addEventListener('click', e => {
   const to = n.dataset.nav;
   if (to === 'flow') return openFlowAt(STEPS.length - 1);
   if (to === 'generate') return generate();
+  if (to === 'restart') { if (EMBED) return parent.postMessage({ type: 'fokus:close' }, '*'); return location.reload(); }
   openScreen(to);
 });
 $('loginForm').addEventListener('submit', e => { e.preventDefault(); openScreen('style'); });
@@ -955,11 +1179,11 @@ function generate() {
   runLoading(['Отправляем запрос на сервер', 'Пишем тексты слайдов', 'Подбираем изображения', `Верстаем ${n} слайдов`, 'Презентация готова'], () => {
     $('star').classList.add('done');
     $('loadText').innerHTML = '<span>Презентация готова</span>';
-    // Экрана с готовой презентацией в макете нет — отдаём все данные наружу.
-    const detail = JSON.parse(JSON.stringify({ answers: S.a, outline: S.outline }));
+    const detail = JSON.parse(JSON.stringify({ answers: S.a, outline: S.outline, outlineKeys: S.outlineKeys }));
     document.dispatchEvent(new CustomEvent('fokus:complete', { detail }));
     if (EMBED) parent.postMessage({ type: 'fokus:complete' }, '*');
     console.log('fokus:complete', detail);
+    setTimeout(() => openScreen('deck'), 1400);   // результат: готовая презентация
   });
 }
 
